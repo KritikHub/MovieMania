@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct MovieDetailView: View {
     
@@ -35,11 +36,10 @@ struct MovieDetailView: View {
         
         let movie: Movie
         @State private var selectedTrailer: MovieVideo?
-        let imageLoader = ImageLoader()
                 
         var body: some View {
             List {
-                MovieDetailImage(imageLoader: imageLoader, imageURL: self.movie.backdropURL)
+                MovieDetailImage(imageURL: self.movie.backdropURL)
                     .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
                 HStack {
                     Text(movie.genreText)
@@ -54,8 +54,6 @@ struct MovieDetailView: View {
                         Text(movie.ratingText).foregroundColor(.yellow)
                             .font(.system(size: 40))
                             .baselineOffset(30)
-                            //.fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
-                            //.frame(width: .infinity, height: .infinity, alignment: .center)
                           
                         }
                     Text(movie.scoreText)
@@ -134,21 +132,19 @@ struct MovieDetailView: View {
 
 struct MovieDetailImage: View {
     
-    @ObservedObject var imageLoader = ImageLoader()
     let imageURL: URL
+    let cache = ImageCache.default
     
     var body: some View {
         ZStack {
-            Rectangle().fill(Color.gray.opacity(0.3))
-            if self.imageLoader.image != nil {
-                Image(uiImage: self.imageLoader.image!)
-                    .resizable()                    
-            }
+            Rectangle().fill(Color.gray.opacity(0.3))           
+                KFImage(imageURL)
+                    .cacheMemoryOnly()
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+            
         }
         .aspectRatio(contentMode: .fill)
-        .onAppear {
-            self.imageLoader.loadImage(with: self.imageURL)
-        }
     }
 }
 

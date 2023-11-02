@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -14,7 +14,6 @@
 		046801A52A72A91300D0D5D8 /* movie_list.json in Resources */ = {isa = PBXBuildFile; fileRef = 046801A22A72A91300D0D5D8 /* movie_list.json */; };
 		046801A62A72A91300D0D5D8 /* search_movie.json in Resources */ = {isa = PBXBuildFile; fileRef = 046801A32A72A91300D0D5D8 /* search_movie.json */; };
 		046801A92A72BB1400D0D5D8 /* MovieBackdropCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046801A82A72BB1400D0D5D8 /* MovieBackdropCard.swift */; };
-		046801AC2A72BB5800D0D5D8 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046801AB2A72BB5800D0D5D8 /* ImageLoader.swift */; };
 		0468162B2A7BB04D00365D34 /* MoviePosterCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0468162A2A7BB04D00365D34 /* MoviePosterCard.swift */; };
 		0468162D2A7BB63600365D34 /* MoviePosterCarouselView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0468162C2A7BB63600365D34 /* MoviePosterCarouselView.swift */; };
 		0468162F2A7BB94800365D34 /* MovieListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0468162E2A7BB94800365D34 /* MovieListView.swift */; };
@@ -23,6 +22,7 @@
 		046816362A7BC63600365D34 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046816352A7BC63600365D34 /* LoadingView.swift */; };
 		046E23AD2A71575200627816 /* MovieServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046E23AC2A71575200627816 /* MovieServices.swift */; };
 		046E23AF2A7160C100627816 /* MovieStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046E23AE2A7160C100627816 /* MovieStore.swift */; };
+		0482D1D32AF3B1650062F6F8 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 0482D1D22AF3B1650062F6F8 /* Kingfisher */; };
 		048E12822AF355E40001E7C0 /* MovieSearchState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048E12812AF355E40001E7C0 /* MovieSearchState.swift */; };
 		0492484A2A80E00200D922D0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049248492A80E00200D922D0 /* AppDelegate.swift */; };
 		0492484C2A81017900D922D0 /* MovieDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0492484B2A81017900D922D0 /* MovieDetailView.swift */; };
@@ -45,7 +45,6 @@
 		046801A22A72A91300D0D5D8 /* movie_list.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = movie_list.json; sourceTree = "<group>"; };
 		046801A32A72A91300D0D5D8 /* search_movie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = search_movie.json; sourceTree = "<group>"; };
 		046801A82A72BB1400D0D5D8 /* MovieBackdropCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieBackdropCard.swift; sourceTree = "<group>"; };
-		046801AB2A72BB5800D0D5D8 /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
 		0468162A2A7BB04D00365D34 /* MoviePosterCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviePosterCard.swift; sourceTree = "<group>"; };
 		0468162C2A7BB63600365D34 /* MoviePosterCarouselView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviePosterCarouselView.swift; sourceTree = "<group>"; };
 		0468162E2A7BB94800365D34 /* MovieListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListView.swift; sourceTree = "<group>"; };
@@ -75,6 +74,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0482D1D32AF3B1650062F6F8 /* Kingfisher in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -110,7 +110,6 @@
 		046801AA2A72BB3600D0D5D8 /* Bindings */ = {
 			isa = PBXGroup;
 			children = (
-				046801AB2A72BB5800D0D5D8 /* ImageLoader.swift */,
 				046816302A7BB95E00365D34 /* MovieListState.swift */,
 				0492484D2A8103C500D922D0 /* MovieDetailState.swift */,
 				048E12812AF355E40001E7C0 /* MovieSearchState.swift */,
@@ -205,6 +204,9 @@
 			dependencies = (
 			);
 			name = SwiftUiMovieDb;
+			packageProductDependencies = (
+				0482D1D22AF3B1650062F6F8 /* Kingfisher */,
+			);
 			productName = SwiftUiMovieDb;
 			productReference = 04C0B17E2A6FFB3C00F352D7 /* SwiftUiMovieDb.app */;
 			productType = "com.apple.product-type.application";
@@ -232,6 +234,9 @@
 				Base,
 			);
 			mainGroup = 04C0B1752A6FFB3B00F352D7;
+			packageReferences = (
+				0482D1D12AF3B1650062F6F8 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+			);
 			productRefGroup = 04C0B17F2A6FFB3C00F352D7 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -276,7 +281,6 @@
 				0468162D2A7BB63600365D34 /* MoviePosterCarouselView.swift in Sources */,
 				0468019F2A728ADA00D0D5D8 /* Movie+Stub.swift in Sources */,
 				048E12822AF355E40001E7C0 /* MovieSearchState.swift in Sources */,
-				046801AC2A72BB5800D0D5D8 /* ImageLoader.swift in Sources */,
 				0492484C2A81017900D922D0 /* MovieDetailView.swift in Sources */,
 				04D1979C2AF3506B000F148C /* MovieSearchView.swift in Sources */,
 				04C0B1922A6FFB9900F352D7 /* Movie.swift in Sources */,
@@ -470,6 +474,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		0482D1D12AF3B1650062F6F8 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.10.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		0482D1D22AF3B1650062F6F8 /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0482D1D12AF3B1650062F6F8 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 04C0B1762A6FFB3C00F352D7 /* Project object */;
 }
