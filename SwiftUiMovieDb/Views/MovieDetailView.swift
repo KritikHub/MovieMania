@@ -133,18 +133,18 @@ struct MovieDetailView: View {
 struct MovieDetailImage: View {
     
     let imageURL: URL
-    let cache = ImageCache.default
     
     var body: some View {
         ZStack {
             Rectangle().fill(Color.gray.opacity(0.3))           
                 KFImage(imageURL)
+                    .placeholder(backdropPlaceholderImage)
                     .cacheMemoryOnly()
                     .resizable()
-                    .aspectRatio(contentMode: .fill)
+                    .aspectRatio(contentMode: .fit)
             
         }
-        .aspectRatio(contentMode: .fill)
+        
     }
 }
 

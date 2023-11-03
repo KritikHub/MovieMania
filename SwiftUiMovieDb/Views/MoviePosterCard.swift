@@ -11,29 +11,31 @@ import Kingfisher
 struct MoviePosterCard: View {
     
     let movie: Movie
-    let cache = ImageCache.default
+    private let imageCornerRadius: CGFloat = 8
+    private let imageShadowRadius: CGFloat = 4
+    private let frameWidth: CGFloat = 204
+    private let frameHeight: CGFloat = 306
+    
     var body: some View {
         ZStack {
-            if cache.isCached(forKey: "my_cache_key") {
-              
-                Rectangle()
-                    .fill(Color.gray.opacity(0.3))
-                    .cornerRadius(8)
-                    .shadow(radius: 4)
-                
-                Text(movie.title)
-                .multilineTextAlignment(.center)
-            } else {
                 KFImage(movie.posterURL)
+                    .placeholder(posterPlaceholderImage)
                     .cacheMemoryOnly()
                     .resizable()
                     .aspectRatio(contentMode: /*@START_MENU_TOKEN@*/.fill/*@END_MENU_TOKEN@*/)
-                    .cornerRadius(8)
-                    .shadow(radius: 4)
-            }
+                    .cornerRadius(imageCornerRadius)
+                    .shadow(radius: imageShadowRadius)            
         }
-        .frame(width: 204, height: 306)
+        .frame(width: frameWidth, height: frameHeight)
     }
+}
+
+@ViewBuilder
+private func posterPlaceholderImage() -> some View {
+    Image("PosterImagePlaceholder")
+        .resizable()
+        .aspectRatio(contentMode: .fill)
+        .frame(width: 204, height: 306, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
 }
 
 struct MoviePosterCard_Previews: PreviewProvider {

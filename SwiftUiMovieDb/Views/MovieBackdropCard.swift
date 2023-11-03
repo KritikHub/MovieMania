@@ -11,6 +11,10 @@ import Kingfisher
 struct MovieBackdropCard: View {
     
     let movie: Movie
+    private let aspectRatio: CGFloat = 16/9
+    private let cornerRadius: CGFloat = 8
+    private let shadowRadius: CGFloat = 4
+    private let lineLimit = 1
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -18,18 +22,24 @@ struct MovieBackdropCard: View {
                 Rectangle()
                     .fill(Color.gray.opacity(0.3))
                 
-                KFImage(movie.backdropURL)                    
+                KFImage(movie.backdropURL)
+                    .placeholder(backdropPlaceholderImage)
                     .cacheMemoryOnly()
-                    .resizable()
-                    .aspectRatio(contentMode: /*@START_MENU_TOKEN@*/.fill/*@END_MENU_TOKEN@*/)                   
+                    .resizable()                  
             }
-            .aspectRatio(16/9, contentMode: .fit)
-            .cornerRadius(8)
-            .shadow(radius: 4)
+            .aspectRatio(aspectRatio, contentMode: .fit)
+            .cornerRadius(cornerRadius)
+            .shadow(radius: shadowRadius)
             Text(movie.title)
         }
-        .lineLimit(1)
+        .lineLimit(lineLimit)
     }
+}
+
+@ViewBuilder
+func backdropPlaceholderImage() -> some View {
+    Image("PosterImagePlaceholder")
+        .resizable()
 }
 
 struct MovieBackdropCard_Previews: PreviewProvider {

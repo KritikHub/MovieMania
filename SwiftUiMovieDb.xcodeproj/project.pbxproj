@@ -35,6 +35,10 @@
 		04D1979C2AF3506B000F148C /* MovieSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1979B2AF3506B000F148C /* MovieSearchView.swift */; };
 		04D1979E2AF350E9000F148C /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1979D2AF350E9000F148C /* SearchBar.swift */; };
 		04DB76472AF2DDA30016DA21 /* SafariView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04DB76462AF2DDA20016DA21 /* SafariView.swift */; };
+		04EF600E2AF51DA5008918B8 /* EndPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04EF600D2AF51DA5008918B8 /* EndPoint.swift */; };
+		04EF60102AF51E8F008918B8 /* URN.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04EF600F2AF51E8F008918B8 /* URN.swift */; };
+		04EF60122AF51F46008918B8 /* BaseUrlType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04EF60112AF51F46008918B8 /* BaseUrlType.swift */; };
+		04EF60152AF52BF4008918B8 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04EF60142AF52BF4008918B8 /* Configuration.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -67,6 +71,10 @@
 		04D1979B2AF3506B000F148C /* MovieSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieSearchView.swift; sourceTree = "<group>"; };
 		04D1979D2AF350E9000F148C /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		04DB76462AF2DDA20016DA21 /* SafariView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariView.swift; sourceTree = "<group>"; };
+		04EF600D2AF51DA5008918B8 /* EndPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndPoint.swift; sourceTree = "<group>"; };
+		04EF600F2AF51E8F008918B8 /* URN.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URN.swift; sourceTree = "<group>"; };
+		04EF60112AF51F46008918B8 /* BaseUrlType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseUrlType.swift; sourceTree = "<group>"; };
+		04EF60142AF52BF4008918B8 /* Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -155,6 +163,8 @@
 		04C0B1802A6FFB3C00F352D7 /* SwiftUiMovieDb */ = {
 			isa = PBXGroup;
 			children = (
+				04EF60132AF52026008918B8 /* Configuration */,
+				04EF600C2AF51D20008918B8 /* Network */,
 				046801AA2A72BB3600D0D5D8 /* Bindings */,
 				046801A72A72BAE300D0D5D8 /* Views */,
 				046801A02A72A88200D0D5D8 /* Resources */,
@@ -186,6 +196,24 @@
 				0468019E2A728ADA00D0D5D8 /* Movie+Stub.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		04EF600C2AF51D20008918B8 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				04EF600D2AF51DA5008918B8 /* EndPoint.swift */,
+				04EF600F2AF51E8F008918B8 /* URN.swift */,
+				04EF60112AF51F46008918B8 /* BaseUrlType.swift */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		04EF60132AF52026008918B8 /* Configuration */ = {
+			isa = PBXGroup;
+			children = (
+				04EF60142AF52BF4008918B8 /* Configuration.swift */,
+			);
+			path = Configuration;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -278,14 +306,18 @@
 				04D1979E2AF350E9000F148C /* SearchBar.swift in Sources */,
 				046816342A7BC42700365D34 /* ActivityIndicatorView.swift in Sources */,
 				046816312A7BB95E00365D34 /* MovieListState.swift in Sources */,
+				04EF60122AF51F46008918B8 /* BaseUrlType.swift in Sources */,
 				0468162D2A7BB63600365D34 /* MoviePosterCarouselView.swift in Sources */,
 				0468019F2A728ADA00D0D5D8 /* Movie+Stub.swift in Sources */,
 				048E12822AF355E40001E7C0 /* MovieSearchState.swift in Sources */,
 				0492484C2A81017900D922D0 /* MovieDetailView.swift in Sources */,
 				04D1979C2AF3506B000F148C /* MovieSearchView.swift in Sources */,
+				04EF60102AF51E8F008918B8 /* URN.swift in Sources */,
 				04C0B1922A6FFB9900F352D7 /* Movie.swift in Sources */,
+				04EF60152AF52BF4008918B8 /* Configuration.swift in Sources */,
 				0468162F2A7BB94800365D34 /* MovieListView.swift in Sources */,
 				046E23AF2A7160C100627816 /* MovieStore.swift in Sources */,
+				04EF600E2AF51DA5008918B8 /* EndPoint.swift in Sources */,
 				0492484A2A80E00200D922D0 /* AppDelegate.swift in Sources */,
 				0468019D2A72356600D0D5D8 /* Utils.swift in Sources */,
 			);
