@@ -34,7 +34,7 @@ struct MovieDetailView: View {
 }
     struct MovieDetailListView: View {
         
-        let movie: Movie
+        let movie: Movies
         @State private var selectedTrailer: MovieVideo?
                 
         var body: some View {
@@ -151,7 +151,7 @@ struct MovieDetailImage: View {
 struct MovieDetailView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-        MovieDetailView(movieId: Movie.stubbedMovie.id)
+        MovieDetailView(movieId: Movies.stubbedMovie.id)
         }
     }
 }

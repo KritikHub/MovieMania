@@ -36,14 +36,13 @@ struct MovieBackdropCard: View {
     }
 }
 
-@ViewBuilder
 func backdropPlaceholderImage() -> some View {
     Image("PosterImagePlaceholder")
         .resizable()
 }
 
-struct MovieBackdropCard_Previews: PreviewProvider {
-    static var previews: some View {
-        MovieBackdropCard(movie: Movie.stubbedMovie)
-    }
-}
+//struct MovieBackdropCard_Previews: PreviewProvider {
+//    static var previews: some View {
+//        MovieBackdropCard(movie: Movie.stubbedMovie)
+//    }
+//}

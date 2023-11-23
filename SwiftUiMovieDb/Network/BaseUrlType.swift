@@ -7,9 +7,13 @@
 
 import Foundation
 
-struct BaseURLType {
+enum BaseURLType {
+    case movieDB
      
     var baseURLString: String {
-        return "https://api.themoviedb.org/3"
+        switch self {
+        case .movieDB:
+            return "https://api.themoviedb.org/3"
+        }
     }
 }

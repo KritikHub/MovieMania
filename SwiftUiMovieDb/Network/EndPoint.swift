@@ -16,13 +16,13 @@ enum EndPoint {
     var rawValue: String {
         switch self {
         case .nowPlaying:
-            return "now_playing"
+            return "/movie/now_playing"
         case .upcoming:
-            return "upcoming"
+            return "/movie/upcoming"
         case .topRated:
-            return "top_rated"
+            return "/movie/top_rated"
         case .popular:
-            return "popular"
+            return "/movie/popular"
         }
     }
 }

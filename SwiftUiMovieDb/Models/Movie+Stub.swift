@@ -7,13 +7,13 @@
 
 import Foundation
 
-extension Movie {
-    static var stubbedMovies: [Movie] {
+extension Movies {
+    static var stubbedMovies: [Movies] {
         let response: MovieResponse? = try? Bundle.main.loadAndDecodeJSON(filename: "movie_list")
         return response!.results
     }
     
-    static var stubbedMovie: Movie {
+    static var stubbedMovie: Movies {
         stubbedMovies[0]
     }
     

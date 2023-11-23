@@ -11,6 +11,7 @@ import Kingfisher
 struct MoviePosterCard: View {
     
     let movie: Movie
+    
     private let imageCornerRadius: CGFloat = 8
     private let imageShadowRadius: CGFloat = 4
     private let frameWidth: CGFloat = 204
@@ -18,7 +19,7 @@ struct MoviePosterCard: View {
     
     var body: some View {
         ZStack {
-                KFImage(movie.posterURL)
+            KFImage(movie.posterURL)
                     .placeholder(posterPlaceholderImage)
                     .cacheMemoryOnly()
                     .resizable()
@@ -30,16 +31,17 @@ struct MoviePosterCard: View {
     }
 }
 
-@ViewBuilder
 private func posterPlaceholderImage() -> some View {
-    Image("PosterImagePlaceholder")
+     let imageFrameWidth: CGFloat = 204
+     let imageFrameHeight: CGFloat = 306
+   return Image("PosterImagePlaceholder")
         .resizable()
         .aspectRatio(contentMode: .fill)
-        .frame(width: 204, height: 306, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+        .frame(width: imageFrameWidth, height: imageFrameHeight, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
 }
 
-struct MoviePosterCard_Previews: PreviewProvider {
-    static var previews: some View {
-        MoviePosterCard(movie: Movie.stubbedMovie)
-    }
-}
+//struct MoviePosterCard_Previews: PreviewProvider {
+//    static var previews: some View {
+//        MoviePosterCard(movie: nil)
+//    }
+//}

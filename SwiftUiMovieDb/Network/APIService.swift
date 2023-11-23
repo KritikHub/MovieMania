@@ -10,7 +10,6 @@ import Foundation
 class APIService {
     
     func makeRequest<T: URN>(with urnData: T,
-                             headers: [String: String]? = nil,
                              completionHandler: @escaping (Result<T.Derived, MDBError>) -> Void) {
     
         var urlComponents = URLComponents(string: urnData.baseURLType.baseURLString +

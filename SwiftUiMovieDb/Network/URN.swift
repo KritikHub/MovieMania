@@ -54,9 +54,8 @@ protocol MovieDBURN: URN {}
 
 extension MovieDBURN {
     
-    var baseURLType: String {
-        let baseUrl = BaseURLType()
-        return baseUrl.baseURLString
+    var baseURLType: BaseURLType {
+        return .movieDB
     }
     
     var method: HTTPMethod {
@@ -83,3 +82,26 @@ extension MovieDBURN {
         return nil
     }
 }
+
+struct MovieListURN: MovieDBURN {
+    
+    typealias Derived = MovieListData
+    
+    var movieType: MovieListType
+    
+    var endPoint: EndPoint {
+        switch movieType {
+        case .now_playing:
+            return .nowPlaying
+        case .upcoming:
+            return .upcoming
+        case .top_rated:
+            return .topRated
+        case .popular:
+            return .popular
+        }
+    }
+    
+    var parameters: [String : String]?
+}
+

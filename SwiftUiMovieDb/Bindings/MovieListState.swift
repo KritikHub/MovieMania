@@ -9,7 +9,7 @@ import SwiftUI
 
 class MovieListState: ObservableObject {
     
-    @Published var movies: [Movie]?
+    @Published var movies: [Movies]?
     @Published var isLoading = false
     @Published var error: NSError?
     
@@ -24,8 +24,7 @@ class MovieListState: ObservableObject {
         self.isLoading = false
         self.movieService.fetchMovies(from: endpoint) {[weak self] (result) in
             guard let self = self else { return }
-            self.isLoading = false
-            
+            self.isLoading = false            
             switch result {
             case .success(let response):
                 self.movies = response.results

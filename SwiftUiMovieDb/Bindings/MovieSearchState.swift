@@ -12,7 +12,7 @@ import Foundation
 class MovieSearchState: ObservableObject {
     
     @Published var query = ""
-    @Published var movies: [Movie]?
+    @Published var movies: [Movies]?
     @Published var isLoading = false
     @Published var error: NSError?
     

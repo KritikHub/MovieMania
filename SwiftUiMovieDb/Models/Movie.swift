@@ -9,10 +9,10 @@ import Foundation
 
 struct MovieResponse: Decodable {
     
-    let results: [Movie]
+    let results: [Movies]
 }
 
-struct Movie: Decodable, Identifiable {
+struct Movies: Decodable, Identifiable {
     
     let id: Int
     let title: String
@@ -71,14 +71,14 @@ struct Movie: Decodable, Identifiable {
         guard let releaseDate = self.releaseDate, let date = Utils.dateFormatter.date(from: releaseDate) else {
             return "n/a"
         }
-        return Movie.yearFormatter.string(from: date)
+        return Movies.yearFormatter.string(from: date)
     }
     
     var durationText: String {
         guard let runtime = self.runtime, runtime > 0 else {
             return "n/a"
         }
-        return Movie.durationFormatter.string(from: TimeInterval(runtime) * 60) ?? "n/a"
+        return Movies.durationFormatter.string(from: TimeInterval(runtime) * 60) ?? "n/a"
     }
     
     var cast: [MovieCast]? {

@@ -27,8 +27,8 @@ struct MovieBackdropCarouselView: View {
                             .frame(width: 272, height: 230)
                         }
                         .buttonStyle(PlainButtonStyle())
-                            .padding(.leading, movie.id == self.movies.first!.id ? 16 : 0)
-                            .padding(.trailing, movie.id == self.movies.last!.id ? 16 : 0)
+                        .padding(.leading, movie.id == self.movies.first!.id ? 16 : 0)
+                        .padding(.trailing, movie.id == self.movies.last!.id ? 16 : 0)
                     }
                 }
             }
@@ -36,8 +36,8 @@ struct MovieBackdropCarouselView: View {
     }
 }
 
-struct MovieBackgroundCarouselView_Previews: PreviewProvider {
-    static var previews: some View {
-        MovieBackdropCarouselView(title: "Latest", movies: Movie.stubbedMovies)
-    }
-}
+//struct MovieBackgroundCarouselView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        MovieBackdropCarouselView(title: "Latest", movies: Movie.stubbedMovies)
+//    }
+//}
