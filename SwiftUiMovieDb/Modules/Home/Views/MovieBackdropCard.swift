@@ -25,9 +25,9 @@ struct MovieBackdropCard: View {
                 KFImage(movie.backdropURL)
                     .placeholder(backdropPlaceholderImage)
                     .cacheMemoryOnly()
-                    .resizable()                  
+                    .resizable()
+                    .aspectRatio(aspectRatio, contentMode: .fit)
             }
-            .aspectRatio(aspectRatio, contentMode: .fit)
             .cornerRadius(cornerRadius)
             .shadow(radius: shadowRadius)
             Text(movie.title)

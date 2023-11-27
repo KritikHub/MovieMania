@@ -1,29 +1,24 @@
 //
-//  Movie.swift
+//  MovieDetailsData.swift
 //  SwiftUiMovieDb
 //
-//  Created by mac on 25/07/23.
+//  Created by mac on 24/11/23.
 //
 
 import Foundation
 
-struct MovieResponse: Decodable {
-    
-    let results: [Movies]
-}
-
-struct Movies: Decodable, Identifiable {
+struct MovieDetails: Decodable {
     
     let id: Int
     let title: String
-    let backdropPath: String?
+    let backdrop_path: String?
     let overview: String
-    let posterPath: String?
-    let voteAverage: Double
-    let voteCount: Int
+    let poster_path: String?
+    let vote_average: Double
+    let vote_count: Int
     let runtime: Int?
     let genres: [MovieGenre]?
-    let releaseDate: String?
+    let release_date: String?
     let credits: MovieCredits?
     let videos: MovieVideoResponse?
     
@@ -41,11 +36,11 @@ struct Movies: Decodable, Identifiable {
     }()
     
     var backdropURL: URL {
-        return URL(string: "https://image.tmdb.org/t/p/w500\(backdropPath ?? "")")!
+        return URL(string: "https://image.tmdb.org/t/p/w500\(backdrop_path ?? "")")!
     }
     
     var posterURL: URL {
-        return URL(string: "https://image.tmdb.org/t/p/w500\(posterPath ?? "")")!
+        return URL(string: "https://image.tmdb.org/t/p/w500\(poster_path ?? "")")!
     }
     
     var genreText: String {
@@ -53,7 +48,7 @@ struct Movies: Decodable, Identifiable {
     }
     
     var ratingText: String {
-        let rating = Int(voteAverage)
+        let rating = Int(vote_average)
         let ratingText = (0..<rating).reduce("") { (acc, _) -> String in
             return acc + "*"
         }
@@ -68,17 +63,17 @@ struct Movies: Decodable, Identifiable {
     }
     
     var yearText: String {
-        guard let releaseDate = self.releaseDate, let date = Utils.dateFormatter.date(from: releaseDate) else {
+        guard let releaseDate = self.release_date, let date = Utils.dateFormatter.date(from: releaseDate) else {
             return "n/a"
         }
-        return Movies.yearFormatter.string(from: date)
+        return MovieDetails.yearFormatter.string(from: date)
     }
     
     var durationText: String {
         guard let runtime = self.runtime, runtime > 0 else {
             return "n/a"
         }
-        return Movies.durationFormatter.string(from: TimeInterval(runtime) * 60) ?? "n/a"
+        return MovieDetails.durationFormatter.string(from: TimeInterval(runtime) * 60) ?? "n/a"
     }
     
     var cast: [MovieCast]? {
@@ -104,45 +99,46 @@ struct Movies: Decodable, Identifiable {
     var youtubeTrailers: [MovieVideo]? {
           videos?.results.filter { $0.youtubeURL != nil }
       }
+    
 }
 
-//struct MovieGenre: Decodable {
-//    let name: String
-//}
-//
-//struct MovieCredits: Decodable {
-//    let cast: [MovieCast]
-//    let crew: [MovieCrew]
-//}
-//
-//struct MovieCast: Decodable, Identifiable {
-//    let id: Int
-//    let character: String
-//    let name: String
-//}
-//
-//struct MovieCrew: Decodable, Identifiable {
-//    let id: Int
-//    let job: String
-//    let name: String
-//}
-//
-//struct MovieVideoResponse: Decodable {
-//
-//    let results: [MovieVideo]
-//}
-//
-//struct MovieVideo: Decodable, Identifiable {
-//
-//    let id: String
-//    let key: String
-//    let name: String
-//    let site: String
-//
-//    var youtubeURL: URL? {
-//        guard site == "YouTube" else {
-//            return nil
-//        }
-//        return URL(string: "https://youtube.com/watch?v=\(key)")
-//    }
-//}
+struct MovieGenre: Decodable {
+    let name: String
+}
+
+struct MovieCredits: Decodable {
+    let cast: [MovieCast]
+    let crew: [MovieCrew]
+}
+
+struct MovieCast: Decodable, Identifiable {
+    let id: Int
+    let character: String
+    let name: String
+}
+
+struct MovieCrew: Decodable, Identifiable {
+    let id: Int
+    let job: String
+    let name: String
+}
+
+struct MovieVideoResponse: Decodable {
+    
+    let results: [MovieVideo]
+}
+
+struct MovieVideo: Decodable, Identifiable {
+    
+    let id: String
+    let key: String
+    let name: String
+    let site: String
+    
+    var youtubeURL: URL? {
+        guard site == "YouTube" else {
+            return nil
+        }
+        return URL(string: "https://youtube.com/watch?v=\(key)")
+    }
+}

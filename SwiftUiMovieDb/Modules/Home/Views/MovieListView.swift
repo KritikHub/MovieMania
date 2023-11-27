@@ -9,15 +9,14 @@ import SwiftUI
 
 struct MovieListView: View {
     
-    @ObservedObject private var movieListState = MovieListViewModel()
+    @StateObject private var movieListState = MovieListViewModel()
     
     var body: some View {
         NavigationView {
             List {
-                movieSection(title: "Now Playing", movieType: .now_playing)
-                movieSection(title: "Upcoming", movieType: .upcoming)
-                movieSection(title: "Top Rated", movieType: .top_rated)
-                movieSection(title: "Popular", movieType: .popular)
+                ForEach(MovieListType.allCases, id: \.self) {
+                    movieSection(movieType: $0)
+                }
             }
             .navigationBarTitle("The MovieDb")
         }
@@ -28,18 +27,18 @@ struct MovieListView: View {
             self.movieListState.loadMovies(with: .popular)
         }
     }
-
-private func movieSection(title: String, movieType: MovieListType) -> some View {
-    Group {
-        if movieListState.movies != nil {
-            if movieType == .now_playing {
-                MoviePosterCarouselView(title: title, movies: movieListState.movies!)
-            } else {
-                MovieBackdropCarouselView(title: title, movies: movieListState.movies!)
-            }
-            }else {
+    
+    private func movieSection(movieType: MovieListType) -> some View {
+        Group {
+            if movieListState.movies.isEmpty {
                 LoadingMDBView(isLoading: self.movieListState.isLoading, error: self.movieListState.error) {
                     self.movieListState.loadMovies(with: movieType)
+                }
+            } else {
+                if movieType == .now_playing {
+                    MoviePosterCarouselView(title: movieType.title, movies: movieListState.movies)
+                } else {
+                    MovieBackdropCarouselView(title: movieType.title, movies: movieListState.movies)
                 }
             }
         }

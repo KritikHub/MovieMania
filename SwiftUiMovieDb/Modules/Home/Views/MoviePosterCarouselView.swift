@@ -11,27 +11,35 @@ struct MoviePosterCarouselView: View {
     
     let title: String
     let movies: [Movie]
-     
+    
     var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            Text(title)
-                .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
-                .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
-                .padding(.horizontal)
-            
+        VStack(alignment: .center, spacing: .zero) {
+            HStack {
+                Text(title)
+                    .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
+                    .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
+                Spacer()
+                Text("View All")
+                    .lineLimit(1)
+                    .background(emptyNavigationLink(ShowAllMoviesView()))
+            }
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(alignment: .top, spacing: 16) {
                     ForEach(self.movies) {movie in
                         NavigationLink(destination: MovieDetailView(movieId: movie.id)) {
-                        MoviePosterCard(movie: movie)
-                        }.buttonStyle(PlainButtonStyle())
-                        .padding(.leading, movie.id == self.movies.first!.id ? 16 : 0)
-                        .padding(.trailing, movie.id == self.movies.last!.id ? 16 : 0)
+                            MoviePosterCard(movie: movie)
+                        }
                     }
                 }
             }
         }
-        
+        .padding(.horizontal, 16)
+    }
+}
+
+extension View {
+    func emptyNavigationLink<T: View>(_ destination: T) -> some View {
+        NavigationLink(destination: destination) {}
     }
 }
 

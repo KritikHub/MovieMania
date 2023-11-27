@@ -11,30 +11,31 @@ import Kingfisher
 struct MovieDetailView: View {
     
     let movieId: Int
-    @ObservedObject private var movieDetailState = MovieDetailState()
-    
+    @StateObject private var movieDetailState = MovieDetailsViewModel()
     
     var body: some View {
         ZStack {
-            LoadingView(isLoading: self.movieDetailState.isLoading, error: self.movieDetailState.error) {
-                self.movieDetailState.loadMovie(id: self.movieId)
-            }
-            if movieDetailState.movie != nil {
-                MovieDetailListView(movie: self.movieDetailState.movie!)
+            switch movieDetailState.viewState {
+            case .loading:
+                LoadingMDBView(isLoading: self.movieDetailState.isLoading, error: self.movieDetailState.error) {
+                    self.movieDetailState.loadMovie(with: self.movieId)
+                }
+            case .success(let movieDetails):
+                MovieDetailListView(movie: movieDetails)
+            case .error:
+                EmptyView()
             }
         }
-        .navigationTitle(movieDetailState.movie?.title ?? "")
-        .onAppear {
-            
+        .navigationTitle(movieDetailState.movieDetails?.title ?? "")
+        .onAppear {            
                 UITableView.appearance().separatorStyle = .none
-          
-            self.movieDetailState.loadMovie(id: self.movieId)
+            self.movieDetailState.loadMovie(with: self.movieId)
         }
     }
 }
     struct MovieDetailListView: View {
         
-        let movie: Movies
+        let movie: MovieDetails
         @State private var selectedTrailer: MovieVideo?
                 
         var body: some View {

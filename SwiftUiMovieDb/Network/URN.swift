@@ -105,3 +105,15 @@ struct MovieListURN: MovieDBURN {
     var parameters: [String : String]?
 }
 
+struct MovieDetailsURN: MovieDBURN {
+ 
+    typealias Derived = MovieDetails
+    
+    var id: Int
+    
+    var endPoint: EndPoint {
+        return .movieDetails(id: id)
+    }
+    var parameters: [String : String]?
+    
+}

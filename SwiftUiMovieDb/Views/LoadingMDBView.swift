@@ -14,11 +14,11 @@ struct LoadingMDBView: View {
     let retryAction: (() -> ())?
     
     var body: some View {
-        Group {
+        ZStack {
             if isLoading {
                 HStack {
                     Spacer()
-                    ActivityIndicatorView()
+                    ProgressView()
                     Spacer()
                 }
             } else if error != nil {

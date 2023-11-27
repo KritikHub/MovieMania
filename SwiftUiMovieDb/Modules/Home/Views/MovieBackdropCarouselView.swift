@@ -23,8 +23,8 @@ struct MovieBackdropCarouselView: View {
                        , spacing: 16) {
                     ForEach(self.movies) { movie in
                         NavigationLink(destination: MovieDetailView(movieId: movie.id)) {
-                        MovieBackdropCard(movie: movie)
-                            .frame(width: 272, height: 230)
+                            MovieBackdropCard(movie: movie)
+                                .frame(width: 272, height: 230)
                         }
                         .buttonStyle(PlainButtonStyle())
                         .padding(.leading, movie.id == self.movies.first!.id ? 16 : 0)

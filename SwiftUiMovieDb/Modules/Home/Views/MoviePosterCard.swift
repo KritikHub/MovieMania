@@ -20,28 +20,22 @@ struct MoviePosterCard: View {
     var body: some View {
         ZStack {
             KFImage(movie.posterURL)
-                    .placeholder(posterPlaceholderImage)
-                    .cacheMemoryOnly()
-                    .resizable()
-                    .aspectRatio(contentMode: /*@START_MENU_TOKEN@*/.fill/*@END_MENU_TOKEN@*/)
-                    .cornerRadius(imageCornerRadius)
-                    .shadow(radius: imageShadowRadius)            
+                .placeholder(posterPlaceholderImage)
+                .cacheMemoryOnly()
+                .resizable()
+                .aspectRatio(contentMode: /*@START_MENU_TOKEN@*/.fill/*@END_MENU_TOKEN@*/)
+                .cornerRadius(imageCornerRadius)
+                .shadow(radius: imageShadowRadius)
         }
         .frame(width: frameWidth, height: frameHeight)
     }
 }
 
 private func posterPlaceholderImage() -> some View {
-     let imageFrameWidth: CGFloat = 204
-     let imageFrameHeight: CGFloat = 306
-   return Image("PosterImagePlaceholder")
+    let imageFrameWidth: CGFloat = 204
+    let imageFrameHeight: CGFloat = 306
+    return Image("PosterImagePlaceholder")
         .resizable()
         .aspectRatio(contentMode: .fill)
         .frame(width: imageFrameWidth, height: imageFrameHeight, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
 }
-
-//struct MoviePosterCard_Previews: PreviewProvider {
-//    static var previews: some View {
-//        MoviePosterCard(movie: nil)
-//    }
-//}
