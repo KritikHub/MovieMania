@@ -10,24 +10,23 @@ import SwiftUI
 class MovieListViewModel: ObservableObject {    
     
     @Published var movies: [Movie] = []
-    @Published var isLoading = false
+    @Published var viewState: ViewState<[Movie]> = .loading
     @Published var error: MDBError?
     
     let service = APIService()
     
     func loadMovies(with movieType: MovieListType) {
         self.movies = []
-        self.isLoading = false
         let urn = MovieListURN(movieType: movieType)
         self.service.makeRequest(with: urn) {[weak self] (result) in
             guard let self = self else { return }
             DispatchQueue.main.async {
-                self.isLoading = false
                 switch result {
                 case .success(let response):
                     self.movies = response.results
+                    self.viewState = .success(data: response.results)
                 case .failure(let error):
-                    self.error = error
+                    self.viewState = .error(error)
                 }
             }
         }
@@ -47,9 +46,18 @@ enum MovieListType: CaseIterable {
         case .popular:
             return "Popular"
         case .top_rated:
-            return "Top ratd"
+            return "Top rated"
         case .upcoming:
             return "Upcoming"
+        }
+    }
+    
+    var value: [Movie] {
+        switch self {
+        case .now_playing:
+            return []
+        default:
+            <#code#>
         }
     }
 }

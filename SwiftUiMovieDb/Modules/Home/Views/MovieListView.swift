@@ -9,7 +9,7 @@ import SwiftUI
 
 struct MovieListView: View {
     
-    @StateObject private var movieListState = MovieListViewModel()
+    @StateObject private var manager = MovieListViewModel()
     
     var body: some View {
         NavigationView {
@@ -21,28 +21,31 @@ struct MovieListView: View {
             .navigationBarTitle("The MovieDb")
         }
         .onAppear {
-            self.movieListState.loadMovies(with: .now_playing)
-            self.movieListState.loadMovies(with: .upcoming)
-            self.movieListState.loadMovies(with: .top_rated)
-            self.movieListState.loadMovies(with: .popular)
+            self.manager.loadMovies(with: .now_playing)
+            self.manager.loadMovies(with: .upcoming)
+            self.manager.loadMovies(with: .top_rated)
+            self.manager.loadMovies(with: .popular)
         }
     }
     
     private func movieSection(movieType: MovieListType) -> some View {
         Group {
-            if movieListState.movies.isEmpty {
-                LoadingMDBView(isLoading: self.movieListState.isLoading, error: self.movieListState.error) {
-                    self.movieListState.loadMovies(with: movieType)
-                }
+            if manager.movies.isEmpty {
+                loaderView
             } else {
                 if movieType == .now_playing {
-                    MoviePosterCarouselView(title: movieType.title, movies: movieListState.movies)
+                    MoviePosterCarouselView(title: movieType.title, movies: manager.movies)
                 } else {
-                    MovieBackdropCarouselView(title: movieType.title, movies: movieListState.movies)
+                    MovieBackdropCarouselView(title: movieType.title, movies: manager.movies)
                 }
             }
         }
         .listRowInsets(EdgeInsets(top: 8, leading: 0, bottom: 16, trailing: 0))
+    }
+    
+    private var loaderView: some View {
+        Color.clear
+            .showLoader(true, tint: .gray, background: .white)
     }
 }
 struct MovieListView_Previews: PreviewProvider {

@@ -37,14 +37,3 @@ struct MoviePosterCarouselView: View {
     }
 }
 
-extension View {
-    func emptyNavigationLink<T: View>(_ destination: T) -> some View {
-        NavigationLink(destination: destination) {}
-    }
-}
-
-//struct MoviePosterCarouselView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        MoviePosterCarouselView(title: "Now Playing", movies: nil)
-//    }
-//}

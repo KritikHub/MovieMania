@@ -14,7 +14,8 @@ struct ShowMovieCardView: View {
     var body: some View {
         VStack(alignment: .center) {
             movieCard(movie: movie)
-            Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+            Text(movie.title)
+                .lineLimit(1)
         }
     }
 }

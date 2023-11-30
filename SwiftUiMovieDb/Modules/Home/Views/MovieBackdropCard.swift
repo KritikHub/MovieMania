@@ -19,20 +19,23 @@ struct MovieBackdropCard: View {
     var body: some View {
         VStack(alignment: .leading) {
             ZStack {
-                Rectangle()
-                    .fill(Color.gray.opacity(0.3))
+//                Rectangle()
+//                    .fill(Color.gray.opacity(0.3))
                 
                 KFImage(movie.backdropURL)
                     .placeholder(backdropPlaceholderImage)
                     .cacheMemoryOnly()
                     .resizable()
-                    .aspectRatio(aspectRatio, contentMode: .fit)
+                    .scaledToFill()
+                    .aspectRatio(contentMode: .fit)
+                    .cornerRadius(cornerRadius)
+                    .shadow(radius: shadowRadius)
+                    
             }
-            .cornerRadius(cornerRadius)
-            .shadow(radius: shadowRadius)
+            
             Text(movie.title)
+                .lineLimit(1)
         }
-        .lineLimit(lineLimit)
     }
 }
 
@@ -41,8 +44,3 @@ func backdropPlaceholderImage() -> some View {
         .resizable()
 }
 
-//struct MovieBackdropCard_Previews: PreviewProvider {
-//    static var previews: some View {
-//        MovieBackdropCard(movie: Movie.stubbedMovie)
-//    }
-//}

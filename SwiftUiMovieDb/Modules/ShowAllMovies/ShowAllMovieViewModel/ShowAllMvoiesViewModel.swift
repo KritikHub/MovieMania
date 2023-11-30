@@ -10,17 +10,15 @@ import Foundation
 class ShowAllMoviesViewModel: ObservableObject {
     
     var movies: [Movie] = []
-    var prevPageNo = 1
     
     @Published var viewState: ViewState<[Movie]> = .loading
     
     let service = APIService()
     
-    func loadMovies(with movieType: MovieListType, pageNo: Int) {
-        viewState = .loading
+    func loadMovies(with movieType: MovieListType, pageNo: Int, prevPageNo: Int) {       
         let param = generateParameterForMovieDetails(pageNo: pageNo)
         let urn = MovieListURN(movieType: movieType, parameters: param)
-        guard pageNo == prevPageNo || pageNo < prevPageNo else {
+        guard pageNo == prevPageNo || pageNo > prevPageNo else {
             return
         }
         self.service.makeRequest(with: urn) {[weak self] (result) in
@@ -42,5 +40,12 @@ class ShowAllMoviesViewModel: ObservableObject {
         
         parameters[Parameter.page.rawValue] = "\(pageNo)"
         return parameters
+    }
+    func isLastItem(movieId: Int) -> Bool{
+        let lastId = movies.last!
+        guard movieId == lastId.id && movies.last != nil else {
+            return false
+        }
+        return true
     }
 }

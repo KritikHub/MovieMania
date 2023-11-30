@@ -9,10 +9,11 @@ import SwiftUI
 
 struct ShowAllMoviesView: View {
     
-    @StateObject private var viewModel = ShowAllMoviesViewModel()
+    @StateObject private var manager = ShowAllMoviesViewModel()
+    @State var prevPageNo = 1
     
-    var viewState: ViewState<[Movie]> {
-        return viewModel.viewState
+    var viewStates: ViewState<[Movie]> {
+        return manager.viewState
     }
     
     private var screenWidth: CGFloat {
@@ -23,40 +24,54 @@ struct ShowAllMoviesView: View {
         (screenWidth - 2 * 16 - 16) / 2
     }
     
+    private var nextPageNo: Int {
+        prevPageNo = prevPageNo + 1
+        return prevPageNo
+    }
+    
     private var columns = [GridItem(.flexible(), spacing: 16), GridItem(.flexible())]
     
     private var allMovies: [Movie] {
-        return viewModel.movies
+        return manager.movies
     }
-     
-//    private Var showLoader: some View {
-//         LoadingMDBView
-//    }
     
+    private var loaderView: some View {
+        Color.clear
+            .showLoader(true, tint: .gray, background: .white)
+    }
+
     var body: some View {
-      mainContent
+        mainContent
+            .onAppear {
+                manager.loadMovies(with: .now_playing, pageNo: 1, prevPageNo: prevPageNo)
+            }
     }
     
     @ViewBuilder
     private var mainContent: some View {
-        switch viewState {
-        case .loading:
-            LoadingMDBView(isLoading: true, error: <#T##MDBError?#>, retryAction: <#T##(() -> ())?##(() -> ())?##() -> ()#>)
-        case .success(data: <#T##[Movie]#>):
-            ScrollView {
-                LazyVGrid(columns: columns, spacing: 16) {
-                    ForEach(allMovies) { movie in
-                        ShowMovieCardView(movie: movie)
-                            .onAppear {
-                                //TODO: Need to implement load more!
-                            }
-                            .frame(width: movieCardWidth)
+        ZStack{
+            switch viewStates {
+            case .loading:
+                loaderView
+            case .success(let data):
+                ScrollView {
+                    LazyVGrid(columns: columns, spacing: 16) {
+                        ForEach(data) { movie in
+                            ShowMovieCardView(movie: movie)
+                                .onAppear {
+                                    if manager.isLastItem(movieId: movie.id) {
+                                        manager.loadMovies(with: .now_playing,
+                                                           pageNo: nextPageNo,
+                                                           prevPageNo: prevPageNo)
+                                    }
+                                }
+                                .frame(width: movieCardWidth)
+                        }
                     }
+                    .padding(.horizontal, 16)
                 }
-                .padding(.horizontal, 16)
-                .onAppear {
-                   viewModel.loadMovies(with: .now_playing, pageNo: 1)
-                }
+            case .error:
+                EmptyView()
             }
         }
     }
