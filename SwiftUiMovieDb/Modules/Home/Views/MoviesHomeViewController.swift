@@ -14,6 +14,10 @@ class MoviesHomeViewController: UIViewController {
         UIHostingController(rootView: ContentView())
     }
     
+    private var navigator: MDBNavigator {
+        return MDBNavigator(navigationController: navigationController ?? UINavigationController())
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(embedViewController.view)

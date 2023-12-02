@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		04016B222A7B967F00219D4D /* MovieBackdropCarouselView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04016B212A7B967A00219D4D /* MovieBackdropCarouselView.swift */; };
+		043262942B19F8BA0068D9C8 /* Navigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043262932B19F8BA0068D9C8 /* Navigator.swift */; };
 		044FC1BF2AF6514300355F87 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 044FC1BE2AF6514300355F87 /* APIService.swift */; };
 		044FC1C22AF6544100355F87 /* DescriptiveErrorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 044FC1C12AF6544100355F87 /* DescriptiveErrorType.swift */; };
 		04532B092B0F26EC00A037C3 /* LoadingMDBView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04532B082B0F26EC00A037C3 /* LoadingMDBView.swift */; };
@@ -60,6 +61,7 @@
 
 /* Begin PBXFileReference section */
 		04016B212A7B967A00219D4D /* MovieBackdropCarouselView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieBackdropCarouselView.swift; sourceTree = "<group>"; };
+		043262932B19F8BA0068D9C8 /* Navigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Navigator.swift; sourceTree = "<group>"; };
 		044FC1BE2AF6514300355F87 /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
 		044FC1C12AF6544100355F87 /* DescriptiveErrorType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptiveErrorType.swift; sourceTree = "<group>"; };
 		04532B082B0F26EC00A037C3 /* LoadingMDBView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingMDBView.swift; sourceTree = "<group>"; };
@@ -123,6 +125,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		043262922B19F89B0068D9C8 /* Navigation */ = {
+			isa = PBXGroup;
+			children = (
+				043262932B19F8BA0068D9C8 /* Navigator.swift */,
+			);
+			path = Navigation;
+			sourceTree = "<group>";
+		};
 		044FC1C02AF6540500355F87 /* Protocol */ = {
 			isa = PBXGroup;
 			children = (
@@ -366,6 +376,7 @@
 		04E5970A2B14BD830031395A /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				043262922B19F89B0068D9C8 /* Navigation */,
 				046F83432B1875F100B81D8D /* Utilities */,
 				04EDFE022B15B04E00B9000F /* Extensions */,
 				04E5970B2B14BD930031395A /* ViewModifiers */,
@@ -486,6 +497,7 @@
 				0492484E2A8103C500D922D0 /* MovieDetailState.swift in Sources */,
 				04016B222A7B967F00219D4D /* MovieBackdropCarouselView.swift in Sources */,
 				04C0B1822A6FFB3C00F352D7 /* SwiftUiMovieDbApp.swift in Sources */,
+				043262942B19F8BA0068D9C8 /* Navigator.swift in Sources */,
 				047DA1832AF7FD1F002D1E0C /* APIKey.swift in Sources */,
 				04DB76472AF2DDA30016DA21 /* SafariView.swift in Sources */,
 				0485A55E2B10B8DB0069646E /* ShowAllMoviesView.swift in Sources */,
