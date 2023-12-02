@@ -87,7 +87,7 @@ struct MovieListURN: MovieDBURN {
     
     typealias Derived = MovieListData
     
-    var movieType: MovieListType
+    var movieType: MoviesCategory
     
     var endPoint: EndPoint {
         switch movieType {

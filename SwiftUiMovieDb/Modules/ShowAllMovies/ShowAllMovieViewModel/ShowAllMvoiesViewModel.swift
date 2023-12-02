@@ -8,28 +8,35 @@
 import Foundation
 
 class ShowAllMoviesViewModel: ObservableObject {
+        
+    @Published var isLoading: Bool = false
+    @Published var movies: [Movie] = []
+    @Published var error: MDBError = .unknown
     
-    var movies: [Movie] = []
+    private var currentPage: Int = .zero
     
-    @Published var viewState: ViewState<[Movie]> = .loading
+    var isLoadingFirstTime: Bool = true
     
     let service = APIService()
     
-    func loadMovies(with movieType: MovieListType, pageNo: Int, prevPageNo: Int) {       
-        let param = generateParameterForMovieDetails(pageNo: pageNo)
+    func loadMovies(with movieType: MoviesCategory, from nextPage: Int) {
+        let param = generateParameterForMovieDetails(pageNo: nextPage)
         let urn = MovieListURN(movieType: movieType, parameters: param)
-        guard pageNo == prevPageNo || pageNo > prevPageNo else {
+        guard nextPage > currentPage else {
             return
         }
+        isLoading = true
         self.service.makeRequest(with: urn) {[weak self] (result) in
             guard let self = self else { return }
+            self.isLoadingFirstTime = false
             DispatchQueue.main.async {
+                self.isLoading = false
                 switch result {
                 case .success(let response):
                     self.movies.append(contentsOf: response.results)
-                    self.viewState = .success(data: self.movies)
+                    self.currentPage = nextPage
                 case .failure(let error):
-                    self.viewState = .error(error)
+                    self.error = error
                 }
             }
         }
@@ -42,8 +49,8 @@ class ShowAllMoviesViewModel: ObservableObject {
         return parameters
     }
     func isLastItem(movieId: Int) -> Bool{
-        let lastId = movies.last!
-        guard movieId == lastId.id && movies.last != nil else {
+        let lastmovie = movies.last
+        guard movieId == lastmovie?.id && movies.last != nil else {
             return false
         }
         return true

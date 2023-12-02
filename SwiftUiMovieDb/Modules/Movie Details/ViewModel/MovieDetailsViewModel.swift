@@ -31,7 +31,6 @@ class MovieDetailsViewModel: ObservableObject {
     
     private func generateParameterForMovieDetails() -> [String: String] {
         var parameters: [String: String] = [:]
-        
         parameters[Parameter.movieDetails.rawValue] = "videos,credits"
         return parameters
     }

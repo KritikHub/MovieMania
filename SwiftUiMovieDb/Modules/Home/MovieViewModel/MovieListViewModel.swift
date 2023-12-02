@@ -7,24 +7,39 @@
 
 import SwiftUI
 
-class MovieListViewModel: ObservableObject {    
+final class MovieListViewModel: ObservableObject {
     
-    @Published var movies: [Movie] = []
-    @Published var viewState: ViewState<[Movie]> = .loading
-    @Published var error: MDBError?
+    @Published var viewState: ViewState<[MoviesCategory:[Movie]]> = .loading
+    
+    private var moviesWithCategories: [MoviesCategory:[Movie]] = [:]
     
     let service = APIService()
     
-    func loadMovies(with movieType: MovieListType) {
-        self.movies = []
+    let group = DispatchGroup()
+    
+    func loadAllMovies() {
+        MoviesCategory.allCases.forEach { category in
+           self.loadMovies(with: category)
+        }
+    }
+    
+    private func loadMovies(with movieType: MoviesCategory) {
         let urn = MovieListURN(movieType: movieType)
+        self.group.enter()
+        viewState = .loading
         self.service.makeRequest(with: urn) {[weak self] (result) in
             guard let self = self else { return }
+            self.group.leave()
             DispatchQueue.main.async {
                 switch result {
                 case .success(let response):
-                    self.movies = response.results
-                    self.viewState = .success(data: response.results)
+                    self.moviesWithCategories[movieType] = response.results
+                    if self.moviesWithCategories.count == MoviesCategory.allCases.count {
+                        self.group.notify(queue: .main) {
+                            print("All movies loaded successfully! \(self.moviesWithCategories.keys)")
+                            self.viewState = .success(data: self.moviesWithCategories)
+                        }
+                    }
                 case .failure(let error):
                     self.viewState = .error(error)
                 }
@@ -33,7 +48,7 @@ class MovieListViewModel: ObservableObject {
     }
 }
 
-enum MovieListType: CaseIterable {
+enum MoviesCategory: CaseIterable, Decodable {
     case now_playing
     case upcoming
     case top_rated
@@ -49,15 +64,6 @@ enum MovieListType: CaseIterable {
             return "Top rated"
         case .upcoming:
             return "Upcoming"
-        }
-    }
-    
-    var value: [Movie] {
-        switch self {
-        case .now_playing:
-            return []
-        default:
-            <#code#>
         }
     }
 }

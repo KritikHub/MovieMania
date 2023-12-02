@@ -24,7 +24,7 @@ struct MovieDetailView: View {
                 EmptyView()
             }
         }
-        .navigationTitle("manager.movieDetails.title")
+        .navigationTitle("Details")
         .onAppear {
             self.manager.loadMovie(with: self.movieId)
         }
@@ -43,7 +43,6 @@ struct MovieDetailListView: View {
     var body: some View {
         List {
             MovieDetailImage(imageURL: self.movie.backdropURL)
-                .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
             HStack {
                 Text(movie.genreText)
                 Text(".")
