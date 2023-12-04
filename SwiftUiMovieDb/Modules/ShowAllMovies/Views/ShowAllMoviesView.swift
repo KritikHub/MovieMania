@@ -12,10 +12,6 @@ struct ShowAllMoviesView: View {
     @StateObject private var manager = ShowAllMoviesViewModel()
     @State var prevPageNo = 1
     
-    var viewStates: ViewState<[Movie]> {
-        return manager.viewState
-    }
-    
     private var screenWidth: CGFloat {
         UIScreen.main.bounds.width
     }
@@ -35,44 +31,41 @@ struct ShowAllMoviesView: View {
         return manager.movies
     }
     
-    private var loaderView: some View {
-        Color.clear
-            .showLoader(true, tint: .gray, background: .white)
+    private var isLoadingMoreData: Bool {
+        return manager.isLoading && !manager.isLoadingFirstTime
     }
-
+    
     var body: some View {
         mainContent
+            .showLoader(manager.isLoadingFirstTime)
             .onAppear {
-                manager.loadMovies(with: .now_playing, pageNo: 1, prevPageNo: prevPageNo)
+                manager.loadMovies(with: .now_playing, from: 1)
             }
     }
     
     @ViewBuilder
     private var mainContent: some View {
-        ZStack{
-            switch viewStates {
-            case .loading:
-                loaderView
-            case .success(let data):
-                ScrollView {
-                    LazyVGrid(columns: columns, spacing: 16) {
-                        ForEach(data) { movie in
-                            ShowMovieCardView(movie: movie)
-                                .onAppear {
-                                    if manager.isLastItem(movieId: movie.id) {
-                                        manager.loadMovies(with: .now_playing,
-                                                           pageNo: nextPageNo,
-                                                           prevPageNo: prevPageNo)
-                                    }
-                                }
-                                .frame(width: movieCardWidth)
-                        }
-                    }
-                    .padding(.horizontal, 16)
+        ScrollView {
+            LazyVGrid(columns: columns, spacing: 16) {
+                ForEach(manager.movies, id: \.uniqueID) { movie in
+                    ShowMovieCardView(movie: movie)
+                        .onAppear { handleLoadMore(movie) }
+                        .frame(width: movieCardWidth)
                 }
-            case .error:
-                EmptyView()
             }
+            .padding(.horizontal, 16)
+            if isLoadingMoreData {
+                ProgressView()
+            }
+        }
+    }
+    
+    func handleLoadMore(_ movie: Movie) {
+        if manager.isLastItem(movieId: movie.id) {
+            self.manager.loadMovies(
+                with: .now_playing,
+                from: nextPageNo
+            )
         }
     }
 }

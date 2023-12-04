@@ -13,15 +13,18 @@ struct MoviePosterCarouselView: View {
     let movies: [Movie]
     
     var body: some View {
-        VStack(alignment: .center, spacing: .zero) {
+        VStack(alignment: .center, spacing: 8) {
             HStack {
                 Text(title)
                     .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
                     .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
                 Spacer()
-                Text("View All")
-                    .lineLimit(1)
-                    .background(emptyNavigationLink(ShowAllMoviesView()))
+                NavigationLink {
+                    ShowAllMoviesView()
+                } label: {
+                    Text("View All")
+                        .lineLimit(1)
+                }
             }
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(alignment: .top, spacing: 16) {

@@ -10,32 +10,41 @@ import Kingfisher
 
 struct ShowMovieCardView: View {
     
-    var movie: Movie
+    private let frameHeight: CGFloat = 180
+    private let shadowRadius: CGFloat = 4
+    private let cornerRadius: CGFloat = 8
+    
+    private var screenWidth: CGFloat {
+        UIScreen.main.bounds.width
+    }
+    
+    private var movieCardWidth: CGFloat {
+        (screenWidth - 2 * 16 - 16) / 2
+    }
+    
+    private var movieCardPlaceholderImage: some View {
+        Image("PosterImagePlaceholder")
+            .resizable()
+    }
+    
+    let movie: Movie
+    
     var body: some View {
         VStack(alignment: .center) {
-            movieCard(movie: movie)
+            movieImage
             Text(movie.title)
                 .lineLimit(1)
         }
     }
-}
-
-func movieCard(movie: Movie) -> some View {
-     let frameHeight: CGFloat = 180
-     let shadowRadius: CGFloat = 4
-     let cornerRadius: CGFloat = 8
     
-    return KFImage(movie.posterURL)
-        .placeholder(movieCardPlaceholderImage)
-        .cacheMemoryOnly()
-        .resizable()
-        .scaledToFill()
-        .frame(height: frameHeight)
-        .shadow(radius: shadowRadius)
-        .cornerRadius(cornerRadius)
-}
-
-func movieCardPlaceholderImage() -> some View {
-    Image("PosterImagePlaceholder")
-        .resizable()
+    private var movieImage: some View {
+        KFImage(movie.posterURL)
+            .placeholder { movieCardPlaceholderImage }
+            .cacheMemoryOnly()
+            .resizable()
+            .aspectRatio(contentMode: .fill)
+            .frame(width: movieCardWidth, height: frameHeight)
+            .shadow(radius: shadowRadius)
+            .cornerRadius(cornerRadius)
+    }
 }

@@ -11,16 +11,20 @@ struct MovieBackdropCarouselView: View {
     
     let title: String
     let movies: [Movie]
+    
     var body: some View {
         VStack(alignment: .leading, spacing: .zero) {
             HStack {
                 Text(title)
                     .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
-                    .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)                    
+                    .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
                 Spacer()
-                Text("View All")
-                    .lineLimit(1)
-                    .background(emptyNavigationLink(ShowAllMoviesView()))
+                NavigationLink {
+                    ShowAllMoviesView()
+                } label: {
+                    Text("View All")
+                        .lineLimit(1)
+                }
             }
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(alignment: .top, spacing: 16) {
