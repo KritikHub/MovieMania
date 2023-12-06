@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ShowAllMoviesView: View {
     
-    @StateObject private var manager = ShowAllMoviesViewModel()
+    @StateObject private var viewModel = ShowAllMoviesViewModel()
     @State var prevPageNo = 1
     
     private var screenWidth: CGFloat {
@@ -28,18 +28,18 @@ struct ShowAllMoviesView: View {
     private var columns = [GridItem(.flexible(), spacing: 16), GridItem(.flexible())]
     
     private var allMovies: [Movie] {
-        return manager.movies
+        return viewModel.movies
     }
     
     private var isLoadingMoreData: Bool {
-        return manager.isLoading && !manager.isLoadingFirstTime
+        return viewModel.isLoading && !viewModel.isLoadingFirstTime
     }
     
     var body: some View {
         mainContent
-            .showLoader(manager.isLoadingFirstTime)
+            .showLoader(viewModel.isLoadingFirstTime)
             .onAppear {
-                manager.loadMovies(with: .now_playing, from: 1)
+                viewModel.loadMovies(with: .now_playing, from: 1)
             }
     }
     
@@ -47,10 +47,12 @@ struct ShowAllMoviesView: View {
     private var mainContent: some View {
         ScrollView {
             LazyVGrid(columns: columns, spacing: 16) {
-                ForEach(manager.movies, id: \.uniqueID) { movie in
-                    ShowMovieCardView(movie: movie)
-                        .onAppear { handleLoadMore(movie) }
-                        .frame(width: movieCardWidth)
+                ForEach(viewModel.movies, id: \.uniqueID) { movie in
+                    NavigationLink(destination: MovieDetailView(movieId: movie.id)) {
+                        MovieCardView(movie: movie)
+                            .onAppear { handleLoadMore(movie) }
+                            .frame(width: movieCardWidth)
+                    }
                 }
             }
             .padding(.horizontal, 16)
@@ -61,8 +63,8 @@ struct ShowAllMoviesView: View {
     }
     
     func handleLoadMore(_ movie: Movie) {
-        if manager.isLastItem(movieId: movie.id) {
-            self.manager.loadMovies(
+        if viewModel.isLastItem(movieId: movie.id) {
+            self.viewModel.loadMovies(
                 with: .now_playing,
                 from: nextPageNo
             )

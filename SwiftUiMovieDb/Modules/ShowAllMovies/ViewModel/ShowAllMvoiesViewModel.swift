@@ -20,6 +20,7 @@ class ShowAllMoviesViewModel: ObservableObject {
     let service = APIService()
     
     func loadMovies(with movieType: MoviesCategory, from nextPage: Int) {
+        
         let param = generateParameterForMovieDetails(pageNo: nextPage)
         let urn = MovieListURN(movieType: movieType, parameters: param)
         guard nextPage > currentPage else {

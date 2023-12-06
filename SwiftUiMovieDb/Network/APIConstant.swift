@@ -10,4 +10,5 @@ import Foundation
 enum Parameter: String {
     case movieDetails = "append_to_response"
     case page = "page"
+    case query = "query"
 }

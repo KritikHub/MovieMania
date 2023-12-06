@@ -10,6 +10,6 @@ import Foundation
 struct APIKey {
     
     var apiKey: String {
-        return "3492e734e03e243d1f8b59388a7b1bb2"
+        return "76db078e68e97d6f776e95763c46de8e"
     }
 }

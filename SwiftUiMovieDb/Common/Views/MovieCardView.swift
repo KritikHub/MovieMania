@@ -8,7 +8,7 @@
 import SwiftUI
 import Kingfisher
 
-struct ShowMovieCardView: View {
+struct MovieCardView: View {
     
     private let frameHeight: CGFloat = 180
     private let shadowRadius: CGFloat = 4

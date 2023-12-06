@@ -13,6 +13,9 @@ enum EndPoint {
     case topRated
     case popular
     case movieDetails(id: Int)
+    case searchMovie
+    case movieGenre
+    case tvSeriesGenre
     
     var rawValue: String {
         switch self {
@@ -26,6 +29,12 @@ enum EndPoint {
             return "/movie/popular"
         case .movieDetails(let id):
             return "/movie/\(id)"
+        case .searchMovie:
+            return "/search/movie"
+        case .movieGenre:
+            return "/genre/movie/list"
+        case .tvSeriesGenre:
+            return "/genre/tv/list"
         }
     }
 }

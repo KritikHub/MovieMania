@@ -11,11 +11,11 @@ import Kingfisher
 struct MovieDetailView: View {
     
     let movieId: Int
-    @StateObject private var manager = MovieDetailsViewModel()
+    @StateObject private var viewModel = MovieDetailsViewModel()
     
     var body: some View {
         ZStack {
-            switch manager.viewState {
+            switch viewModel.viewState {
             case .loading:
                 loaderView
             case .success(let movieDetails):
@@ -26,7 +26,7 @@ struct MovieDetailView: View {
         }
         .navigationTitle("Details")
         .onAppear {
-            self.manager.loadMovie(with: self.movieId)
+            self.viewModel.loadMovie(with: self.movieId)
         }
     }
     

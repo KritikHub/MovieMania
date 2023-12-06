@@ -114,6 +114,36 @@ struct MovieDetailsURN: MovieDBURN {
     var endPoint: EndPoint {
         return .movieDetails(id: id)
     }
+    
     var parameters: [String : String]?
     
+}
+
+struct SearchMovieURN: MovieDBURN {
+    
+    typealias Derived = MovieListData
+    
+    var endPoint: EndPoint {
+        return .searchMovie
+    }
+    
+    var parameters: [String : String]?
+}
+
+struct GenreURN: MovieDBURN {
+    
+    typealias Derived = GenreList
+    
+    var genreType: GenreType
+    
+    var endPoint: EndPoint {
+        switch genreType {
+        case .movies:
+            return .movieGenre
+        case .TvSeries:
+            return .tvSeriesGenre
+        }
+    }
+    
+    var parameters: [String : String]?
 }
