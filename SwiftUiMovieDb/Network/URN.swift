@@ -147,3 +147,40 @@ struct GenreURN: MovieDBURN {
     
     var parameters: [String : String]?
 }
+
+struct DiscoverURN: MovieDBURN {
+    
+    typealias Derived = MovieListData
+    
+    var genreType: GenreType
+    
+    var endPoint: EndPoint {
+        switch genreType {
+        case .movies:
+            return .discoverMovie
+        case .TvSeries:
+            return .discoverTV
+        }
+    }
+    
+    var parameters: [String : String]?
+}
+
+struct AddToFavoriteURN: MovieDBURN {
+    
+    typealias Derived = FavoriteMovieResponse
+    
+    var endPoint: EndPoint {
+        return .addFavoriteMovie
+    }
+    
+    var body: Data?
+    
+    var method: HTTPMethod {
+        return .post
+    }
+      
+    var areParametersPercentEncoded: Bool {
+        return true
+    }
+}

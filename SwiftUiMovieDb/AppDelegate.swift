@@ -6,6 +6,7 @@
 //
 import UIKit
 import CoreData
+import FirebaseCore
 
 //@UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -14,6 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         setupRootViewController()
+        setupFirebase()
         UITableView.appearance().separatorStyle = .none
         return true
     }
@@ -23,6 +25,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let initialViewController = MoviesHomeViewController()
         self.window?.rootViewController = initialViewController
         self.window?.makeKeyAndVisible()
+    }
+    
+    fileprivate func setupFirebase() {
+        FirebaseApp.configure()
     }
     
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {

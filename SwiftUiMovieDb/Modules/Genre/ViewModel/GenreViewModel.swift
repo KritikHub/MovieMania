@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-class GenreViewModel: ObservableObject {
+final class GenreViewModel: ObservableObject {
     
-    @Published var viewState: ViewState<[GenreItems]> = .loading
+    @Published var viewState: ViewState<[GenreItem]> = .loading
     
     let service = APIService()
     

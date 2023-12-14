@@ -32,7 +32,7 @@ struct MovieCardView: View {
     var body: some View {
         VStack(alignment: .center) {
             movieImage
-            Text(movie.title)
+            Text(movie.nameValue)
                 .lineLimit(1)
         }
     }

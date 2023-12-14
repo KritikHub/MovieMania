@@ -16,6 +16,9 @@ enum EndPoint {
     case searchMovie
     case movieGenre
     case tvSeriesGenre
+    case discoverMovie
+    case discoverTV
+    case addFavoriteMovie
     
     var rawValue: String {
         switch self {
@@ -35,6 +38,12 @@ enum EndPoint {
             return "/genre/movie/list"
         case .tvSeriesGenre:
             return "/genre/tv/list"
+        case .discoverMovie:
+            return "/discover/movie"
+        case .discoverTV:
+            return "/discover/tv"
+        case .addFavoriteMovie:
+            return "/account/14719795/favorite"
         }
     }
 }

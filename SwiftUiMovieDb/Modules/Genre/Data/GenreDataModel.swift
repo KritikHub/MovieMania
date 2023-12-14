@@ -8,10 +8,10 @@
 import Foundation
 
 struct GenreList: Decodable {
-    let genres: [GenreItems]
+    let genres: [GenreItem]
 }
 
-struct GenreItems: Decodable, Identifiable {
+struct GenreItem: Decodable, Identifiable {
     let id: Int
     let name: String
 }

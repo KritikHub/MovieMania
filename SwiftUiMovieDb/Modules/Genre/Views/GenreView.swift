@@ -11,6 +11,7 @@ struct GenreView: View {
     
     @StateObject var viewModel = GenreViewModel()
     @State var tabIndex = 0
+    @State var genreType = GenreType.movies
     
     private let buttonWidth: CGFloat = 160
     private let buttonHeight: CGFloat = 50
@@ -40,19 +41,19 @@ struct GenreView: View {
             .showLoader(true, tint: .gray, background: .white)
     }
     
-    private func mainContent(genreList: [GenreItems]) -> some View {
+    private func mainContent(genreList: [GenreItem]) -> some View {
         NavigationView {
             VStack {
                 HStack {
                     Spacer()
-                    ButtonTab(index: 0, title: GenreType.movies.title)
+                    ButtonTab(type: GenreType.movies)
                     Spacer()
-                    ButtonTab(index: 1, title: GenreType.TvSeries.title)
+                    ButtonTab(type: GenreType.TvSeries)
                     Spacer()
                 }
                 List {
                     ForEach(genreList, id: \.id) { item in
-                        NavigationLink(destination: ShowAllMoviesView()) {
+                        NavigationLink(destination: DiscoverGenreView(genreType: genreType, genreId: item.id)) {
                             Text(item.name)
                         }
                     }
@@ -64,37 +65,26 @@ struct GenreView: View {
         }
     }
     
-    private func ButtonTab(index: Int, title: String) -> some View {
+    private func ButtonTab(type: GenreType) -> some View {
         Button(action: {
-            changeIndex(index: index)
-            loadGenreType(index: index)
+            loadGenreType(type: type)
         }, label: {
-            Text(title)
+            Text(type.title)
                 .foregroundColor(.black)
                 .frame(width: buttonWidth, height: buttonHeight)
-                .background(index == tabIndex ? Color.gray : Color.white)
+                .background(type == genreType ? Color.gray : Color.white)
                 .cornerRadius(buttonCornerRadius)
                 .shadow(color: .gray, radius: shadowCornerRadius, x: shadowXOffset, y: shadowYOffset)
         })
     }
     
-    private func loadGenreType(index: Int) {
-        if index == 0 {
-            viewModel.loadMovie(with: GenreType.movies)
+    private func loadGenreType(type: GenreType) {
+        if type == GenreType.movies {
+            genreType = type
+            viewModel.loadMovie(with: genreType)
         } else {
-            viewModel.loadMovie(with: GenreType.TvSeries)
+            genreType = type
+            viewModel.loadMovie(with: genreType)
         }
-    }
-    
-    private func changeIndex(index: Int) {
-        if index != tabIndex {
-            tabIndex = index
-        }
-    }
-}
-
-struct GenreView_Previews: PreviewProvider {
-    static var previews: some View {
-        GenreView()
     }
 }

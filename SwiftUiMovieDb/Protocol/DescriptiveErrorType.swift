@@ -9,7 +9,7 @@ import Foundation
 
 struct MDBErrorConstants {
     static let DataNotInExpectedFormat = "Something fishy! Try later"
-    static let UnknownError = "Something fishy! Try later"
+    static let UnknownError = "Unknown error"
     static let noInternetMessage = "Lure the Net! No Connectivity..."
     static let networkSessionNotFound = "Could not find a valid session"
     static let dataParsingFailed = "Sorry! Something went wrong.\n We couldn't parse the data. Please try in a while."
