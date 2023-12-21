@@ -11,22 +11,23 @@ import Kingfisher
 struct MovieDetailView: View {
     
     let movieId: Int
-    @StateObject private var manager = MovieDetailsViewModel()
+    @StateObject private var viewModel = MovieDetailsViewModel()
     
     var body: some View {
         ZStack {
-            switch manager.viewState {
+            switch viewModel.viewState {
             case .loading:
                 loaderView
             case .success(let movieDetails):
-                MovieDetailListView(movie: movieDetails)
+                MovieDetailListView(movie: movieDetails, viewModel: viewModel)
             case .error:
                 EmptyView()
             }
         }
         .navigationTitle("Details")
         .onAppear {
-            self.manager.loadMovie(with: self.movieId)
+            self.viewModel.loadMovie(with: self.movieId)
+            self.viewModel.checkIsFavoriteMovie(id: self.movieId)
         }
     }
     
@@ -38,11 +39,12 @@ struct MovieDetailView: View {
 struct MovieDetailListView: View {
     
     let movie: MovieDetails
+    let viewModel: MovieDetailsViewModel
     @State private var selectedTrailer: MovieVideo?
     
     var body: some View {
         List {
-            MovieDetailImage(imageURL: self.movie.backdropURL)
+            MovieDetailImage(movie: movie, viewModel: viewModel)
             HStack {
                 Text(movie.genreText)
                 Text(".")
@@ -50,62 +52,12 @@ struct MovieDetailListView: View {
                 Text(movie.durationText)
             }
             Text(movie.overview)
-            HStack {
-                if !movie.ratingText.isEmpty {
-                    Text(movie.ratingText).foregroundColor(.yellow)
-                        .font(.system(size: 40))
-                        .baselineOffset(30)
-                    
-                }
-                Text(movie.scoreText)
-                    .font(.headline)
-                    .alignmentGuide(.leading, computeValue: { dimension in
-                        dimension[.trailing]
-                    })
-            }
-            HStack(alignment: .top, spacing: 4) {
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("Starring*").font(.headline)
-                    ForEach(self.movie.cast!.prefix(9)) { cast in
-                        Text(cast.name)
-                    }
-                }.frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
-                Spacer()
-                if movie.crew != nil && movie.crew!.count > 0 {
-                    VStack(alignment: .leading, spacing: 4) {
-                        if movie.directors != nil &&
-                            movie.directors!.count > 0{
-                            Text("Directors").font(.headline)
-                            ForEach(self.movie.directors!.prefix(2)) { crew in
-                                Text(crew.name)
-                            }
-                        }
-                        if movie.producers != nil &&
-                            movie.producers!.count > 0{
-                            Text("Producers").font(.headline)
-                                .fontWeight(.bold)
-                                .padding(.top)
-                            ForEach(self.movie.producers!.prefix(2)) { crew in
-                                Text(crew.name)
-                            }
-                        }
-                        if movie.screenWriters != nil &&
-                            movie.screenWriters!.count > 0{
-                            Text("Screen Writers").font(.headline)
-                                .fontWeight(.bold)
-                                .padding(.top)
-                            ForEach(self.movie.screenWriters!.prefix(2)) { crew in
-                                Text(crew.name)
-                            }
-                        }
-                    }
-                    .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
-                }
-            }
+            ratingViewContent
+            castDetailsContent
             Divider()
-            if movie.youtubeTrailers != nil && movie.youtubeTrailers!.count > 0 {
-                Text("Trailers").font(.headline)
-                
+            if isYoutubeTrailerAvailable(movie: movie) {
+                Text("Trailers")
+                    .font(.headline)
                 ForEach(movie.youtubeTrailers!) { trailer in
                     Button(action: {
                         self.selectedTrailer = trailer
@@ -125,21 +77,104 @@ struct MovieDetailListView: View {
             
         }
     }
+    
+    private var ratingViewContent: some View {
+        HStack {
+            if !isRatingAvailable(movie: movie) {
+                Text(movie.ratingText).foregroundColor(.yellow)
+                    .font(.system(size: 10))
+            }
+            Text(movie.scoreText)
+                .font(.headline)
+                .alignmentGuide(.leading, computeValue: { dimension in
+                    dimension[.trailing]
+                })
+        }
+    }
+    
+    private var castDetailsContent: some View {
+        HStack(alignment: .top, spacing: 4) {
+            VStack(alignment: .leading, spacing: 4) {
+                Text("Starring*")
+                    .font(.headline)
+                ForEach(self.movie.cast!.prefix(9)) { cast in
+                    Text(cast.name)
+                }
+            }.frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+            Spacer()
+            if isCrewDetailsAvailable(movie: movie) {
+                VStack(alignment: .leading, spacing: 4) {
+                    if isDirectorsDetailsAvailable(movie: movie){
+                        Text("Directors")
+                            .font(.headline)
+                        ForEach(self.movie.directors!.prefix(2)) { crew in
+                            Text(crew.name)
+                        }
+                    }
+                    if isProducersDetailsAvailable(movie: movie) {
+                        Text("Producers")
+                            .font(.headline)
+                            .fontWeight(.bold)
+                            .padding(.top)
+                        ForEach(self.movie.producers!.prefix(2)) { crew in
+                            Text(crew.name)
+                        }
+                    }
+                    if isScreenWritersDetailsAvailable(movie: movie) {
+                        Text("Screen Writers")
+                            .font(.headline)
+                            .fontWeight(.bold)
+                            .padding(.top)
+                        ForEach(self.movie.screenWriters!.prefix(2)) { crew in
+                            Text(crew.name)
+                        }
+                    }
+                }
+                .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+            }
+        }
+    }
 }
 
 struct MovieDetailImage: View {
     
-    let imageURL: URL
+    let movie: MovieDetails
+    let viewModel: MovieDetailsViewModel
+    let firebaseClient = FirebaseClient()
+    @State var isFavorite = false
     
     var body: some View {
         ZStack {
             Rectangle().fill(Color.gray.opacity(0.3))           
-            KFImage(imageURL)
+            KFImage(movie.backdropURL)
                 .placeholder(backdropPlaceholderImage)
                 .cacheMemoryOnly()
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-            
+                .overlay(
+                    Image(systemName: isFavorite ? "suit.heart.fill" : "heart")
+                        .padding()
+                        .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, maxHeight: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, alignment: .topTrailing)
+                        .foregroundColor(.red)
+                        .onTapGesture {
+                            isFavorite.toggle()
+                            if isFavorite {
+                                firebaseClient.addFavoriteMovie(id: movie.id,
+                                                                movieName: movie.title,
+                                                                posterPath: movie.poster_path ?? "")
+                                viewModel.addFavoriteMovie(id: movie.id, isAddToFavorite: true)
+                            } else {
+                                firebaseClient.removeFavoriteMovie(id: movie.id)
+                                viewModel.addFavoriteMovie(id: movie.id, isAddToFavorite: false)
+                            }
+                        }
+                )
+        }
+        .onAppear {
+            isFavorite = viewModel.isMovieFavorite
+            viewModel.onIsMovieFavoriteChange = { newValue in
+                self.isFavorite = newValue
+            }          
         }
     }
 }

@@ -9,11 +9,12 @@ import Foundation
 
 struct MDBErrorConstants {
     static let DataNotInExpectedFormat = "Something fishy! Try later"
-    static let UnknownError = "Something fishy! Try later"
+    static let UnknownError = "Unknown error"
     static let noInternetMessage = "Lure the Net! No Connectivity..."
     static let networkSessionNotFound = "Could not find a valid session"
     static let dataParsingFailed = "Sorry! Something went wrong.\n We couldn't parse the data. Please try in a while."
     static let invalidSelf = "Invalid Self"
+    static let firebaseError = "Firebase error"
 }
 
 enum MDBError: DescriptiveErrorType {
@@ -26,6 +27,7 @@ enum MDBError: DescriptiveErrorType {
     case dataParsingError
     case invalidSelf
     case customErrorWithCode(String, Int)
+    case firebaseError
     
     var description: String {
         var errorDescription: String = MDBErrorConstants.UnknownError
@@ -48,6 +50,8 @@ enum MDBError: DescriptiveErrorType {
             errorDescription = MDBErrorConstants.invalidSelf
         case .customErrorWithCode(let message,_):
             errorDescription = message
+        case .firebaseError:
+            errorDescription = MDBErrorConstants.firebaseError
         }
         return errorDescription
     }

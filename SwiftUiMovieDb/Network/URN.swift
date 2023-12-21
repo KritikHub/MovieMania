@@ -67,13 +67,15 @@ extension MovieDBURN {
     }
     
     var headers: [String : String]? {
+        let authToken = APIKey()
         switch method {
         case .get:
             return nil
         case .post, .put, .delete, .patch:
             return [
-                "Content-Type": "application/json",
-                "Accept": "application/json"
+                "accept": "application/json",
+                "content-type": "application/json",
+                "Authorization": authToken.authToken
             ]
         }
     }
@@ -114,6 +116,93 @@ struct MovieDetailsURN: MovieDBURN {
     var endPoint: EndPoint {
         return .movieDetails(id: id)
     }
+    
     var parameters: [String : String]?
     
+}
+
+struct SearchMovieURN: MovieDBURN {
+    
+    typealias Derived = MovieListData
+    
+    var endPoint: EndPoint {
+        return .searchMovie
+    }
+    
+    var parameters: [String : String]?
+}
+
+struct GenreURN: MovieDBURN {
+    
+    typealias Derived = GenreList
+    
+    var genreType: GenreType
+    
+    var endPoint: EndPoint {
+        switch genreType {
+        case .movies:
+            return .movieGenre
+        case .TvSeries:
+            return .tvSeriesGenre
+        }
+    }
+    
+    var parameters: [String : String]?
+}
+
+struct DiscoverURN: MovieDBURN {
+    
+    typealias Derived = MovieListData
+    
+    var genreType: GenreType
+    
+    var endPoint: EndPoint {
+        switch genreType {
+        case .movies:
+            return .discoverMovie
+        case .TvSeries:
+            return .discoverTV
+        }
+    }
+    
+    var parameters: [String : String]?
+}
+
+struct AddToFavoriteURN: MovieDBURN {
+    
+    typealias Derived = FavoriteMovieResponse
+    
+    var endPoint: EndPoint {
+        return .addFavoriteMovie
+    }
+    
+    var body: Data?
+    
+    var method: HTTPMethod {
+        return .post
+    }
+      
+    var parameters: [String : String]?
+}
+
+struct MovieAccountStatesURN: MovieDBURN {
+    
+    typealias Derived = MovieAcountStatesData
+    
+    var id: Int
+    
+    var endPoint: EndPoint {
+        return .movieAccountStates(id: id)
+    }
+    
+    var headers: [String : String]? {
+        let authToken = APIKey()
+        return [
+            "accept": "application/json",
+            "content-type": "application/json",
+            "Authorization": authToken.authToken
+        ]
+    }
+    
+    var parameters: [String : String]?
 }

@@ -1,19 +1,19 @@
 //
-//  MovieListData.swift
+//  TVListData.swift
 //  SwiftUiMovieDb
 //
-//  Created by mac on 06/11/23.
+//  Created by mac on 06/12/23.
 //
 
 import Foundation
 
-struct MovieListData: Decodable {
-    let results: [Movie]
+struct TVListData: Decodable {
+    let results: [TVSeries]
 }
 
-struct Movie: Decodable, Identifiable {
+struct TVSeries: Decodable, Identifiable {
     let id: Int
-    let title: String
+    let name: String
     let backdrop_path: String?
     let overview: String
     let poster_path: String?

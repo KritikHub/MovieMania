@@ -49,7 +49,7 @@ class APIService {
             
             let statusCode = httpResponse.statusCode
             let headers = httpResponse.allHeaderFields as? [String: String]
-            if statusCode == 200 {
+            if (200...299).contains(statusCode) {
                 _self.process(responseData: _data,
                               responseHeaders: headers,
                               completion: completionHandler)

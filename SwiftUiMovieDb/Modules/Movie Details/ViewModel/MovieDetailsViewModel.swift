@@ -7,9 +7,14 @@
 
 import SwiftUI
 
-class MovieDetailsViewModel: ObservableObject {
+final class MovieDetailsViewModel: ObservableObject {
     
     @Published var viewState: ViewState<MovieDetails> = .loading
+    @Published var isMovieFavorite: Bool = false
+    
+    var onIsMovieFavoriteChange: ((Bool) -> Void)?
+    var favoriteMovieResponse = FavoriteMovieResponse(success: false, status_code: 0, status_message: "")
+    var error: MDBError = .customError("")
     
     let service = APIService()
     
@@ -29,9 +34,78 @@ class MovieDetailsViewModel: ObservableObject {
         }
     }
     
+    func addFavoriteMovie(id: Int, isAddToFavorite: Bool) {
+        let data = favoriteMovieBody(id: id, isAddToFavorite: isAddToFavorite)
+        do {
+            let bodyParam = try JSONSerialization.data(withJSONObject: data)
+            let urn = AddToFavoriteURN(body: bodyParam)
+            self.service.makeRequest(with: urn) {[weak self] (result) in
+                guard let self = self else { return }
+                DispatchQueue.main.async {
+                    switch result {
+                    case .success(let response):
+                        self.favoriteMovieResponse = response
+                    case .failure(let error):
+                        self.error = error
+                    }
+                }
+            }
+        } catch {
+            self.error = error as! MDBError
+        }
+    }
+    
+    func checkIsFavoriteMovie(id: Int) {
+        let urn = MovieAccountStatesURN(id: id)
+        self.service.makeRequest(with: urn) {[weak self] (result) in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let response):
+                    self.isMovieFavorite = response.favorite
+                    self.onIsMovieFavoriteChange?(self.isMovieFavorite)
+                case .failure(let error):
+                    self.error = error
+                }
+            }
+        }
+    }
+    
     private func generateParameterForMovieDetails() -> [String: String] {
         var parameters: [String: String] = [:]
         parameters[Parameter.movieDetails.rawValue] = "videos,credits"
         return parameters
     }
+    
+    private func favoriteMovieBody(id: Int, isAddToFavorite: Bool) -> [String: Any] {
+        var body: [String: Any] = [:]
+        body[Body.mediaType.rawValue] = "movie"
+        body[Body.mediaId.rawValue] = id
+        body[Body.favorite.rawValue] = isAddToFavorite
+        return body
+    }
+}
+
+func isRatingAvailable(movie: MovieDetails) -> Bool {
+    return movie.ratingText.isEmpty
+}
+
+func isCrewDetailsAvailable(movie: MovieDetails) -> Bool {
+    return movie.crew != nil && movie.crew!.count > 0
+}
+
+func isDirectorsDetailsAvailable(movie: MovieDetails) -> Bool {
+    return movie.directors != nil && movie.directors!.count > 0
+}
+
+func isProducersDetailsAvailable(movie: MovieDetails) -> Bool {
+    return movie.producers != nil && movie.producers!.count > 0
+}
+
+func isScreenWritersDetailsAvailable(movie: MovieDetails) -> Bool {
+    return movie.screenWriters != nil && movie.screenWriters!.count > 0
+}
+
+func isYoutubeTrailerAvailable(movie: MovieDetails) -> Bool {
+    return movie.youtubeTrailers != nil && movie.youtubeTrailers!.count > 0
 }

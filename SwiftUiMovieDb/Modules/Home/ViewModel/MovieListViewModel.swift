@@ -36,7 +36,6 @@ final class MovieListViewModel: ObservableObject {
                     self.moviesWithCategories[movieType] = response.results
                     if self.moviesWithCategories.count == MoviesCategory.allCases.count {
                         self.group.notify(queue: .main) {
-                            print("All movies loaded successfully! \(self.moviesWithCategories.keys)")
                             self.viewState = .success(data: self.moviesWithCategories)
                         }
                     }
@@ -66,4 +65,28 @@ enum MoviesCategory: CaseIterable, Decodable {
             return "Upcoming"
         }
     }
+    
+    init(from decoder: Decoder) throws {
+            // Attempt to decode the raw value as a String
+            let container = try decoder.singleValueContainer()
+            let rawValue = try container.decode(String.self)
+
+            // Initialize the enum case based on the raw value
+            switch rawValue {
+            case "now_playing":
+                self = .now_playing
+            case "upcoming":
+                self = .upcoming
+            case "top_rated":
+                self = .top_rated
+            case "popular":
+                self = .popular
+            default:
+                // If the raw value doesn't match any case, throw an error
+                throw DecodingError.dataCorruptedError(
+                    in: container,
+                    debugDescription: "Invalid raw value: \(rawValue)"
+                )
+            }
+        }
 }

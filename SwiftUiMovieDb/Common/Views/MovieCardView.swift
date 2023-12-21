@@ -8,7 +8,7 @@
 import SwiftUI
 import Kingfisher
 
-struct ShowMovieCardView: View {
+struct MovieCardView: View {
     
     private let frameHeight: CGFloat = 180
     private let shadowRadius: CGFloat = 4
@@ -27,18 +27,19 @@ struct ShowMovieCardView: View {
             .resizable()
     }
     
-    let movie: Movie
+    let name: String
+    let url: URL
     
     var body: some View {
         VStack(alignment: .center) {
             movieImage
-            Text(movie.title)
+            Text(name)
                 .lineLimit(1)
         }
     }
     
     private var movieImage: some View {
-        KFImage(movie.posterURL)
+        KFImage(url)
             .placeholder { movieCardPlaceholderImage }
             .cacheMemoryOnly()
             .resizable()

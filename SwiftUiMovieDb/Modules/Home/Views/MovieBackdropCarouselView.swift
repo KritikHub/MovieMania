@@ -19,12 +19,10 @@ struct MovieBackdropCarouselView: View {
                     .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
                     .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
                 Spacer()
-                NavigationLink {
-                    ShowAllMoviesView()
-                } label: {
+                NavigationLink(destination: ShowAllMoviesView()) {
                     Text("View All")
                         .lineLimit(1)
-                }
+                }               
             }
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(alignment: .top, spacing: 16) {
