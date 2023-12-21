@@ -10,8 +10,11 @@ import SwiftUI
 final class MovieDetailsViewModel: ObservableObject {
     
     @Published var viewState: ViewState<MovieDetails> = .loading
-    var favoriteMovieResponse = FavoriteMovieResponse(success: "", status_code: 0, status_message: "")
-    var error: MDBError = .unknown
+    @Published var isMovieFavorite: Bool = false
+    
+    var onIsMovieFavoriteChange: ((Bool) -> Void)?
+    var favoriteMovieResponse = FavoriteMovieResponse(success: false, status_code: 0, status_message: "")
+    var error: MDBError = .customError("")
     
     let service = APIService()
     
@@ -49,6 +52,22 @@ final class MovieDetailsViewModel: ObservableObject {
             }
         } catch {
             self.error = error as! MDBError
+        }
+    }
+    
+    func checkIsFavoriteMovie(id: Int) {
+        let urn = MovieAccountStatesURN(id: id)
+        self.service.makeRequest(with: urn) {[weak self] (result) in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let response):
+                    self.isMovieFavorite = response.favorite
+                    self.onIsMovieFavoriteChange?(self.isMovieFavorite)
+                case .failure(let error):
+                    self.error = error
+                }
+            }
         }
     }
     

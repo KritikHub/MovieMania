@@ -36,7 +36,6 @@ final class MovieListViewModel: ObservableObject {
                     self.moviesWithCategories[movieType] = response.results
                     if self.moviesWithCategories.count == MoviesCategory.allCases.count {
                         self.group.notify(queue: .main) {
-                            print("All movies loaded successfully! \(self.moviesWithCategories.keys)")
                             self.viewState = .success(data: self.moviesWithCategories)
                         }
                     }

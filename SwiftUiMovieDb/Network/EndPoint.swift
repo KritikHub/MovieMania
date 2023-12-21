@@ -19,6 +19,7 @@ enum EndPoint {
     case discoverMovie
     case discoverTV
     case addFavoriteMovie
+    case movieAccountStates(id: Int)
     
     var rawValue: String {
         switch self {
@@ -44,6 +45,8 @@ enum EndPoint {
             return "/discover/tv"
         case .addFavoriteMovie:
             return "/account/14719795/favorite"
+        case .movieAccountStates(let id):
+            return "/movie/\(id)/account_states"
         }
     }
 }

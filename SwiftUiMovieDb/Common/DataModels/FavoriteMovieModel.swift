@@ -7,15 +7,24 @@
 
 import Foundation
 
-struct FavoriteMovie: Encodable {
+struct FavoriteMovie: Codable, Identifiable {
+    var id: Int
     var name: String = ""
-    var backdropPath: String = ""
+    var poster_path: String = ""
+    
+    var nameValue: String {
+        return name
+    }
+    
+    var posterURL: URL {
+        return URL(string: "https://image.tmdb.org/t/p/w500\(poster_path)")!
+    }
 }
 
 struct FavoriteMovieResponse: Decodable {
-    let success: String
-    let status_code: Int
-    let status_message: String
+    var success: Bool
+    var status_code: Int
+    var status_message: String
 }
 
 struct FavoriteMovieBodyData: Encodable {

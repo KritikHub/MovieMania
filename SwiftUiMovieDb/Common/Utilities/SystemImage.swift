@@ -12,4 +12,5 @@ enum SystemImage: String {
     case tv = "tv"
     case search = "magnifyingglass"
     case genre = "list.bullet"
+    case favorite = "star.circle.fill"
 }

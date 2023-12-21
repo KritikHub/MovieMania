@@ -67,13 +67,15 @@ extension MovieDBURN {
     }
     
     var headers: [String : String]? {
+        let authToken = APIKey()
         switch method {
         case .get:
             return nil
         case .post, .put, .delete, .patch:
             return [
-                "Content-Type": "application/json",
-                "Accept": "application/json"
+                "accept": "application/json",
+                "content-type": "application/json",
+                "Authorization": authToken.authToken
             ]
         }
     }
@@ -180,7 +182,27 @@ struct AddToFavoriteURN: MovieDBURN {
         return .post
     }
       
-    var areParametersPercentEncoded: Bool {
-        return true
+    var parameters: [String : String]?
+}
+
+struct MovieAccountStatesURN: MovieDBURN {
+    
+    typealias Derived = MovieAcountStatesData
+    
+    var id: Int
+    
+    var endPoint: EndPoint {
+        return .movieAccountStates(id: id)
     }
+    
+    var headers: [String : String]? {
+        let authToken = APIKey()
+        return [
+            "accept": "application/json",
+            "content-type": "application/json",
+            "Authorization": authToken.authToken
+        ]
+    }
+    
+    var parameters: [String : String]?
 }

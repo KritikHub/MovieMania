@@ -53,7 +53,7 @@ struct DiscoverGenreView: View {
                 LazyVGrid(columns: columns, spacing: 16) {
                     ForEach(data, id: \.id) { item in
                         NavigationLink(destination: MovieDetailView(movieId: item.id)) {
-                            MovieCardView(movie: item)
+                            MovieCardView(name: item.nameValue, url: item.posterURL)
                                 .onAppear {
                                     handleLoadMore(item)
                                 }

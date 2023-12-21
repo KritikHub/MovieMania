@@ -27,6 +27,7 @@ struct MovieDetailView: View {
         .navigationTitle("Details")
         .onAppear {
             self.viewModel.loadMovie(with: self.movieId)
+            self.viewModel.checkIsFavoriteMovie(id: self.movieId)
         }
     }
     
@@ -157,10 +158,10 @@ struct MovieDetailImage: View {
                         .foregroundColor(.red)
                         .onTapGesture {
                             isFavorite.toggle()
-                            if isFavorite == true {
+                            if isFavorite {
                                 firebaseClient.addFavoriteMovie(id: movie.id,
                                                                 movieName: movie.title,
-                                                                backdropURL: movie.backdropURL)
+                                                                posterPath: movie.poster_path ?? "")
                                 viewModel.addFavoriteMovie(id: movie.id, isAddToFavorite: true)
                             } else {
                                 firebaseClient.removeFavoriteMovie(id: movie.id)
@@ -168,6 +169,12 @@ struct MovieDetailImage: View {
                             }
                         }
                 )
+        }
+        .onAppear {
+            isFavorite = viewModel.isMovieFavorite
+            viewModel.onIsMovieFavoriteChange = { newValue in
+                self.isFavorite = newValue
+            }          
         }
     }
 }

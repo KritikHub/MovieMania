@@ -11,6 +11,7 @@ enum TabViewSection {
     case home
     case search
     case genre
+    case favorite
     
     var tag: Int {
         switch self {
@@ -19,7 +20,9 @@ enum TabViewSection {
         case .search:
             return 1
         case .genre:
-            return  2
+            return 2
+        case .favorite:
+            return 3
         }
     }
 }

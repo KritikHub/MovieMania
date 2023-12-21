@@ -13,6 +13,7 @@ struct TabBarView: View {
     private let moviesString = "Movies"
     private let searchString = "Search"
     private let genreString = "Genre"
+    private let favoriteString = "Favorite"
     
     var body: some View {
         TabView(selection: $selectedTabIndex) {
@@ -30,21 +31,25 @@ struct TabBarView: View {
                 .tabItem {
                     TabItemView(systemName: SystemImage.genre.rawValue, text: genreString)
                 }
+                .tag(2)
+            FavoriteMoviesView()
+                .tabItem {
+                    TabItemView(systemName: SystemImage.favorite.rawValue, text: favoriteString)
+                }
         }
-        
     }
 }
 
 struct TabItemView: View {
-
+    
     private let systemName: String
     private let text: String
-
+    
     init(systemName: String, text: String) {
         self.systemName = systemName
         self.text = text
     }
-
+    
     var body: some View {
         VStack {
             Image(systemName: self.systemName)

@@ -49,7 +49,7 @@ struct ShowAllMoviesView: View {
             LazyVGrid(columns: columns, spacing: 16) {
                 ForEach(viewModel.movies, id: \.uniqueID) { movie in
                     NavigationLink(destination: MovieDetailView(movieId: movie.id)) {
-                        MovieCardView(movie: movie)
+                        MovieCardView(name: movie.nameValue, url: movie.posterURL)
                             .onAppear { handleLoadMore(movie) }
                             .frame(width: movieCardWidth)
                     }

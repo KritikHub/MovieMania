@@ -27,18 +27,19 @@ struct MovieCardView: View {
             .resizable()
     }
     
-    let movie: Movie
+    let name: String
+    let url: URL
     
     var body: some View {
         VStack(alignment: .center) {
             movieImage
-            Text(movie.nameValue)
+            Text(name)
                 .lineLimit(1)
         }
     }
     
     private var movieImage: some View {
-        KFImage(movie.posterURL)
+        KFImage(url)
             .placeholder { movieCardPlaceholderImage }
             .cacheMemoryOnly()
             .resizable()
