@@ -19,4 +19,16 @@ extension View {
     func emptyNavigationLink<T: View>(_ destination: T) -> some View {
         NavigationLink(destination: destination) {}
     }
+    //
+    //    func displayErrorAlert(errorType: DescriptiveErrorType?) -> Alert {
+    //
+    //        self.showAlert(title: Text(errorTitle), description: Text(errorDescription))
+    //    }
+    
+    func showAlert(errorType: DescriptiveErrorType?) -> Alert {
+        let errorDescription = errorType?.description ?? "An error occured"
+        let errorTitle = errorType?.title ?? "Error"
+        return Alert(title: Text(errorTitle), message: Text(errorDescription), dismissButton: .cancel())
+    }
 }
+

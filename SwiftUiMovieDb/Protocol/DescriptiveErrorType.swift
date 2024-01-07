@@ -14,7 +14,7 @@ struct MDBErrorConstants {
     static let networkSessionNotFound = "Could not find a valid session"
     static let dataParsingFailed = "Sorry! Something went wrong.\n We couldn't parse the data. Please try in a while."
     static let invalidSelf = "Invalid Self"
-    static let firebaseError = "Firebase error"
+    static let favoriteListFirebaseError = "Firebase error"
 }
 
 enum MDBError: DescriptiveErrorType {
@@ -27,7 +27,8 @@ enum MDBError: DescriptiveErrorType {
     case dataParsingError
     case invalidSelf
     case customErrorWithCode(String, Int)
-    case firebaseError
+    case firebaseError(NSError)
+    case favoriteListFirebaseError
     
     var description: String {
         var errorDescription: String = MDBErrorConstants.UnknownError
@@ -50,10 +51,20 @@ enum MDBError: DescriptiveErrorType {
             errorDescription = MDBErrorConstants.invalidSelf
         case .customErrorWithCode(let message,_):
             errorDescription = message
-        case .firebaseError:
-            errorDescription = MDBErrorConstants.firebaseError
+        case .firebaseError(let FirebaseError):
+            errorDescription = filterFirebaseError(FirebaseError.localizedDescription)
+        case .favoriteListFirebaseError:
+            errorDescription = MDBErrorConstants.favoriteListFirebaseError
         }
         return errorDescription
+    }
+    
+    fileprivate func filterFirebaseError(_ errorDescription: String) -> String {
+        guard let index = errorDescription.firstIndex(of: ")") else {
+            return errorDescription
+        }
+        
+        return String(errorDescription[errorDescription.index(index, offsetBy: 2) ..< errorDescription.endIndex])
     }
 }
 

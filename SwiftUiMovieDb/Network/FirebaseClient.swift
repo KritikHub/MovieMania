@@ -8,10 +8,15 @@
 import Foundation
 import FirebaseDatabase
 import FirebaseDatabaseSwift
+import FirebaseAuth
+
+let ref = Database.database().reference()
+var userData: FirebaseDictionary?
 
 struct FirebaseClient {
     
-    private let ref = Database.database().reference()
+    static var currentUser = Auth.auth().currentUser
+    
     
     func addFavoriteMovie(id: Int, movieName: String, posterPath: String) {
         var generateObject = FavoriteMovie(id: id)
@@ -29,7 +34,7 @@ struct FirebaseClient {
     func getFavoriteList(completion: @escaping (Result<[FavoriteMovie], MDBError>) ->  Void) {
         ref.child("FavoriteMovie").observeSingleEvent(of: .value) { parentSnapshot in
             guard let children = parentSnapshot.children.allObjects as? [DataSnapshot] else {
-                completion(.failure(.firebaseError))
+                completion(.failure(.favoriteListFirebaseError))
                 return
             }
             let favoriteMovies: [FavoriteMovie] = children.compactMap({ snapshot in
@@ -40,6 +45,59 @@ struct FirebaseClient {
                 }
             })
             completion(.success(favoriteMovies))
+        }
+    }
+    
+    static func createUserWithEmail(email: String, password: String, completion: @escaping (_ user: User?, _ error: DescriptiveErrorType?) -> Void) {
+        Auth.auth().createUser(withEmail: email, password: password) { (result, error) in
+            if let _error = error {
+                print("ERROR ***** ", _error.localizedDescription)
+                completion(nil, MDBError.firebaseError(_error as NSError))
+                return
+            }
+            guard let user = result?.user else {
+                completion(nil, nil)
+                return
+            }
+            currentUser = user
+            completion(user, nil)
+        }
+    }
+    
+    static func signInUserWithEmail(email: String, password: String, completion: @escaping (_ user: User?, _ error: DescriptiveErrorType?) -> Void) {
+        Auth.auth().signIn(withEmail: email, password: password) { (result, error) in
+            if let _error = error {
+                completion(nil, MDBError.firebaseError(_error as Error as NSError))
+                return
+            }
+            guard let user = result?.user else {
+                completion(nil, nil)
+                return
+            }
+            currentUser = user
+            completion(user, nil)
+        }
+    }
+    
+    static func saveUserAuthData(_ user: User, userData: [String: String], completion: @escaping (_ error: DescriptiveErrorType?, _ ref: DatabaseReference?) -> Void) {
+        ref.child(FirebaseConstants.Entity.user).child(user.uid).updateChildValues(userData) { (error, ref) -> Void in
+            if let _error = error {
+                completion(MDBError.firebaseError(_error as NSError), nil)
+                return
+            }
+            FirebaseClient.fetchUserData({ (userData) -> Void in
+                
+            })
+            completion(nil, ref)
+        }
+    }
+    
+    static func fetchUserData(_ completion: @escaping (FirebaseDictionary?) -> Void) {
+        if let user = currentUser {
+            ref.child(FirebaseConstants.Entity.user).child(user.uid).observeSingleEvent(of: .value, with: {(snapshot) -> Void in
+                userData = snapshot.value as? FirebaseDictionary
+                completion(userData)
+            })
         }
     }
 }
