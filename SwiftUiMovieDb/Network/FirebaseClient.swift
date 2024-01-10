@@ -12,6 +12,7 @@ import FirebaseAuth
 
 let ref = Database.database().reference()
 var userData: FirebaseDictionary?
+let keychainManager = KeychainManager()
 
 struct FirebaseClient {
     
@@ -60,6 +61,7 @@ struct FirebaseClient {
                 return
             }
             currentUser = user
+            keychainManager.saveDataToKeychain(password, service: "firebase auth", account: email)
             completion(user, nil)
         }
     }
